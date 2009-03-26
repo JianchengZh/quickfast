@@ -60,9 +60,9 @@ namespace
     BOOST_CHECK_EQUAL(instruction.getId(), "id");
 
     Messages::FieldIdentityCPtr identity = instruction.getIdentity();
-    BOOST_CHECK(!identity->mandatory());
+    BOOST_CHECK(!instruction.isMandatory());
     BOOST_CHECK_EQUAL(identity->id(),"id");
-    BOOST_CHECK_EQUAL(identity->name(), "NS::Name");
+    BOOST_CHECK_EQUAL(identity->name(), "//NS/Name");
 
     BOOST_CHECK_EQUAL(instruction.presenceMapBitsRequired(), 0);
 
@@ -87,91 +87,106 @@ namespace
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionAscii)
 {
-  Codecs::FieldInstructionAscii instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionAscii instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionUtf8)
 {
-  Codecs::FieldInstructionUtf8 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUtf8 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionByteVector)
 {
-  Codecs::FieldInstructionByteVector instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionByteVector instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionInt8)
 {
-  Codecs::FieldInstructionInt8 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt8 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionUInt8)
 {
-  Codecs::FieldInstructionUInt8 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt8 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionInt16)
 {
-  Codecs::FieldInstructionInt16 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt16 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionUInt16)
 {
-  Codecs::FieldInstructionUInt16 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt16 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionInt32)
 {
-  Codecs::FieldInstructionInt32 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionUInt32)
 {
-  Codecs::FieldInstructionUInt32 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionInt64)
 {
-  Codecs::FieldInstructionInt64 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt64 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionUInt64)
 {
-  Codecs::FieldInstructionUInt64 instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt64 instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionDecimal)
 {
-  Codecs::FieldInstructionDecimal instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 2);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionTemplateRef)
 {
-  Codecs::FieldInstructionTemplateRef instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionTemplateRef instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 0, false);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionGroup)
 {
-  Codecs::FieldInstructionGroup instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionGroup instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1, false);
 }
 
 BOOST_AUTO_TEST_CASE(testFieldInstructionSequence)
 {
-  Codecs::FieldInstructionSequence instruction("Name", "NS");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionSequence instruction(fieldRegistry, "Name", "NS", "", "");
   testFieldInstructionBaseClass(instruction, 1, false);
 }
 
@@ -194,9 +209,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_1_1)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
@@ -252,9 +268,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_1_2)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 field(fieldRegistry, "Value", "", "", "");
   // Should be default:  field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -310,9 +327,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_1_3)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -367,9 +385,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_1_4)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -425,9 +444,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_1_5)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -485,9 +505,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_1_6)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -546,9 +567,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_1a)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -602,9 +624,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_1b)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -662,9 +685,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_1c)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -722,9 +746,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_1d)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+    Messages::FieldRegistry fieldRegistry;
+Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -782,9 +807,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_2a)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -842,9 +868,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_2b)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -902,9 +929,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_2_2c)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionUInt32 field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionUInt32 field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -962,9 +990,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_3_1a)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionAscii field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionAscii field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1018,9 +1047,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_3_1b)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionAscii field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionAscii field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1078,10 +1108,11 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_3_1c)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionAscii field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionAscii field(fieldRegistry, "Value", "", "", "");
   field.setId("1");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1140,9 +1171,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_3_2a)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionAscii field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionAscii field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1200,9 +1232,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_3_2b)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionAscii field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionAscii field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1260,9 +1293,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_4_1a)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionByteVector field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionByteVector field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1316,9 +1350,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_4_1b)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionByteVector field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionByteVector field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1376,9 +1411,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_4_1c)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionByteVector field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionByteVector field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1436,9 +1472,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_4_2a)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionByteVector field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionByteVector field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1497,9 +1534,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_4_2b)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionByteVector field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionByteVector field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
   // verify no presence map needed
   BOOST_CHECK_EQUAL(field.presenceMapBitsRequired(), 0);
 
@@ -1557,9 +1595,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_1)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1616,9 +1655,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_2)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1675,9 +1715,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_3)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1734,9 +1775,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_4)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1793,9 +1835,10 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_5)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(true);
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1854,10 +1897,11 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_6)
   pmap.setNextField(true);
   pmap.rewind();
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
   field.setFieldOp(Codecs::FieldOpPtr(new Codecs::FieldOpCopy));
-  field.indexDictionaries(indexer, "global","", "");
+  field.buildIndexes(indexer, "global","", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1914,17 +1958,20 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_7)
   pmap.setNextField(true);
   pmap.rewind();
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
 
-  Codecs::FieldInstructionExponentPtr exponent(new FieldInstructionExponent("value|exponent", ""));
+  Codecs::FieldInstructionExponentPtr exponent(new FieldInstructionExponent(
+    fieldRegistry, "value|exponent", "", "", ""));
   exponent->setFieldOp(Codecs::FieldOpPtr(new Codecs::FieldOpCopy));
   field.setExponentInstruction(exponent);
 
-  Codecs::FieldInstructionMantissaPtr mantissa(new FieldInstructionMantissa("value|mantissa", ""));
+  Codecs::FieldInstructionMantissaPtr mantissa(new FieldInstructionMantissa(
+    fieldRegistry, "value|mantissa", "", "", ""));
   mantissa->setFieldOp(Codecs::FieldOpPtr(new Codecs::FieldOpDelta));
   field.setMantissaInstruction(mantissa);
-  field.indexDictionaries(indexer, "global", "", "");
+  field.buildIndexes(indexer, "global", "", "");
 
   // We neeed the helper routines in the decoder
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
@@ -1977,7 +2024,8 @@ BOOST_AUTO_TEST_CASE(test_Spec_1x1_Appendix3_1_5_8)
   // create a presence map.
   Codecs::PresenceMap pmap(1);
 
-  Codecs::FieldInstructionDecimal field("Value", "");
+  Messages::FieldRegistry fieldRegistry;
+  Codecs::FieldInstructionDecimal field(fieldRegistry, "Value", "", "", "");
   field.setPresence(false);
 
   // We neeed the helper routines in the decoder

@@ -35,13 +35,18 @@ namespace QuickFAST{
       /// Defines an dictionary to be used for this element.
       /// @param name is the dictionary= attribute of the segment-defining element
       /// @throws TemplateDefinition if not applicable
-      virtual void setDictionaryName(
-        const std::string & name);
+      void setDictionaryName(
+        const std::string & name)
+      {
+        dictionaryName_ = name;
+      }
 
+      //////////////////////////
+      // Implement SchemaElement
       virtual void setApplicationType(const std::string & type, const std::string & ns);
+      virtual bool getApplicationType(std::string & type, std::string & ns)const;
       virtual void addLengthInstruction(FieldInstructionPtr & field);
       virtual void addInstruction(FieldInstructionPtr & field);
-
       virtual void finalize();
 
       /// @brief Retrieve the typeref information
@@ -129,7 +134,7 @@ namespace QuickFAST{
       /// @param dictionaryName is the parent's dictionary name (inherited unless overridden)
       /// @param typeName is the application type for the parent of this segment
       /// @param typeNamespace is the namespace to qualify the application type.
-      void indexDictionaries(
+      void buildIndexes(
         DictionaryIndexer & indexer,
         const std::string & dictionaryName,
         const std::string & typeName,

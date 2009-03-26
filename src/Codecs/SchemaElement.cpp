@@ -25,6 +25,15 @@ SchemaElement::setApplicationType(const std::string & type, const std::string & 
 {
   throw TemplateDefinitionError("<typeRef> not allowed in this context.");
 }
+
+bool
+SchemaElement::getApplicationType(std::string & type, std::string & ns) const
+{
+  // assume no application type defined for this element
+  return false;
+}
+
+
 void
 SchemaElement::setFieldOp(FieldOpPtr fieldOp)
 {
@@ -59,11 +68,4 @@ void
 SchemaElement::setExponentInstruction(FieldInstructionPtr exponent)
 {
   throw TemplateDefinitionError("Exponent applies only to Decimal Field instruction.");
-}
-
-bool
-SchemaElement::getExponentInstruction(FieldInstructionCPtr & exponent) const
-{
-  throw TemplateDefinitionError("Exponent applies only to Decimal Field instruction.");
-  return false;
 }

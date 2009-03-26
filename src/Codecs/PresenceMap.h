@@ -68,6 +68,14 @@ namespace QuickFAST{
       /// @returns true if the field is present.
       bool checkNextField();
 
+      /// @brief Check to see if a specific bit is set
+      ///
+      /// Do not use this function which decoding standard FAST data.   It is intended
+      /// to support the non-standard use of the presence map by ARCA.
+      /// @param the zero-based bit number to check
+      /// @returns true if the requested presence map bit is set.
+      bool checkSpecificBit(size_t bitNumber)const;
+
       /// @brief Reinitialize the presence map to be empty with room for bitCount fields.
       /// @param bitCount how many fields can be represented in the presence map.
       void reset(size_t bitCount = 0);

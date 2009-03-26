@@ -167,8 +167,8 @@ PresenceMap::checkNextField()
     return false;
   }
   bool result = (bits_[bytePosition_] & bitMask_) != 0;
-  if(vout_)(*vout_) << "check pmap[" << bytePosition_ << '/' <<  byteLength_ << ',' 
-    << std::hex << static_cast<unsigned short>(bitMask_) << std::dec << ']' <<(result?'T' : 'F') 
+  if(vout_)(*vout_) << "check pmap[" << bytePosition_ << '/' <<  byteLength_ << ','
+    << std::hex << static_cast<unsigned short>(bitMask_) << std::dec << ']' <<(result?'T' : 'F')
     << std::endl;
   bitMask_ >>= 1;
   if(bitMask_ == 0)
@@ -178,6 +178,25 @@ PresenceMap::checkNextField()
   }
   return result;
 }
+
+
+bool
+PresenceMap::checkSpecificBit(size_t bitNumber)const
+{
+  size_t bytePosition = bitNumber / 7;
+  if(bytePosition >= byteLength_)
+  {
+    if(vout_)(*vout_) << "pmap:eof[" << bitNumber << ']' << std::endl;
+    return false;
+  }
+  size_t bitMask = startByteMask >> (bitNumber % 7);
+  if(vout_)(*vout_) << "check pmap[" << bitNumber << "]["
+    << bytePosition << '/' <<  byteLength_ << ','
+    << std::hex << static_cast<unsigned short>(bitMask) << std::dec << ']' <<(((bits_[bytePosition_] & bitMask) != 0)?'T' : 'F')
+    << std::endl;
+  return (bits_[bytePosition_] & bitMask) != 0;
+}
+
 
 
 void
@@ -212,8 +231,8 @@ PresenceMap::setNextField(bool present)
   {
     bits_[bytePosition_] &= ~bitMask_;
   }
-  if(vout_)(*vout_) << "set pmap[" << bytePosition_ << '/' <<  byteLength_ << ',' 
-    << std::hex << static_cast<unsigned short>(bitMask_) << std::dec << ']' <<(present?'T' : 'F') 
+  if(vout_)(*vout_) << "set pmap[" << bytePosition_ << '/' <<  byteLength_ << ','
+    << std::hex << static_cast<unsigned short>(bitMask_) << std::dec << ']' <<(present?'T' : 'F')
     << std::endl;
   bitMask_ >>= 1;
   if(bitMask_ == 0)

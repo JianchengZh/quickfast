@@ -186,7 +186,7 @@ namespace
       {
         parseSequence(tag, attributeMap);
       }
-      else if (tag == "filler")
+      else if (tag == "unused")
       {
         parseFiller(tag, attributeMap);
       }
@@ -297,7 +297,10 @@ namespace
       )
     {
       boost::scoped_array<char> msgRaw(XMLString::transcode(exc.getMessage()));
-      throw TemplateDefinitionError(msgRaw.get());
+      std::stringstream msg;
+      msg << "XML Warning at [" << exc.getLineNumber() << ':' << exc.getColumnNumber()
+        << "] " <<  msgRaw.get();
+      throw TemplateDefinitionError(msg.str());
     }
 
     virtual void error(
@@ -305,7 +308,10 @@ namespace
       )
     {
       boost::scoped_array<char> msgRaw(XMLString::transcode(exc.getMessage()));
-      throw TemplateDefinitionError(msgRaw.get());
+      std::stringstream msg;
+      msg << "XML Error at [" << exc.getLineNumber() << ':' << exc.getColumnNumber()
+        << "] " <<  msgRaw.get();
+      throw TemplateDefinitionError(msg.str());
     }
 
     virtual void fatalError(
@@ -313,7 +319,10 @@ namespace
       )
     {
       boost::scoped_array<char> msgRaw(XMLString::transcode(exc.getMessage()));
-      throw TemplateDefinitionError(msgRaw.get());
+      std::stringstream msg;
+      msg << "XML Fatal Error at [" << exc.getLineNumber() << ':' << exc.getColumnNumber()
+        << "] " <<  msgRaw.get();
+      throw TemplateDefinitionError(msg.str());
     }
 
   private:
@@ -478,7 +487,11 @@ TemplateBuilder::parseInt8(const std::string & tag, const AttributeMap& attribut
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionInt8(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionInt8(
+    registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -499,7 +512,10 @@ TemplateBuilder::parseUInt8(const std::string & tag, const AttributeMap& attribu
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionUInt8(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionUInt8(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -520,7 +536,10 @@ TemplateBuilder::parseInt16(const std::string & tag, const AttributeMap& attribu
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionInt16(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionInt16(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -541,7 +560,10 @@ TemplateBuilder::parseUInt16(const std::string & tag, const AttributeMap& attrib
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionUInt16(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionUInt16(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -562,7 +584,10 @@ TemplateBuilder::parseInt32(const std::string & tag, const AttributeMap& attribu
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionInt32(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionInt32(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -583,7 +608,10 @@ TemplateBuilder::parseUInt32(const std::string & tag, const AttributeMap& attrib
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionUInt32(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionUInt32(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -604,7 +632,10 @@ TemplateBuilder::parseInt64(const std::string & tag, const AttributeMap& attribu
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionInt64(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionInt64(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -625,7 +656,10 @@ TemplateBuilder::parseUInt64(const std::string & tag, const AttributeMap& attrib
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionUInt64(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionUInt64(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -646,7 +680,10 @@ TemplateBuilder::parseDecimal(const std::string & tag, const AttributeMap& attri
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionDecimal(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionDecimal(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -696,14 +733,21 @@ TemplateBuilder::parseString(const std::string & tag, const AttributeMap& attrib
 
   std::string charset = "ascii";
   getOptionalAttribute(attributes, "charset", charset);
+
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+
   FieldInstructionPtr field;
   if(charset == "unicode")
   {
-    field.reset(new FieldInstructionUtf8(name, ns));
+    field.reset(new FieldInstructionUtf8(
+      registry_->fieldRegistry(), name, ns, type, typeNs));
   }
   else
   {
-    field.reset(new FieldInstructionAscii(name, ns));
+    field.reset(new FieldInstructionAscii(
+      registry_->fieldRegistry(), name, ns, type, typeNs));
   }
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
@@ -725,7 +769,10 @@ TemplateBuilder::parseByteVector(const std::string & tag, const AttributeMap& at
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionByteVector(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionByteVector(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -746,7 +793,10 @@ TemplateBuilder::parseBitMap(const std::string & tag, const AttributeMap& attrib
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionBitMap(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionBitMap(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -768,7 +818,10 @@ TemplateBuilder::parseGroup(const std::string & tag, const AttributeMap& attribu
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionGroup(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionGroup(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -797,7 +850,10 @@ TemplateBuilder::parseSequence(const std::string & tag, const AttributeMap& attr
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionSequence(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionSequence(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string id;
   if (getOptionalAttribute(attributes, "id", id))
   {
@@ -830,7 +886,10 @@ TemplateBuilder::parseLength(const std::string & tag, const AttributeMap& attrib
   std::string name = getRequiredAttribute(attributes, "name");
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionUInt32(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionUInt32(registry_->fieldRegistry(), name, ns, type, typeNs));
   schemaElements_.top().second->addLengthInstruction(field);
   // Is this push necessary?
   schemaElements_.push(StackEntry(tag, field));
@@ -843,7 +902,10 @@ TemplateBuilder::parseTemplateRef(const std::string & tag, const AttributeMap& a
   getOptionalAttribute(attributes, "name", name);
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionTemplateRef(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionTemplateRef(registry_->fieldRegistry(), name, ns, type, typeNs));
   schemaElements_.top().second->addInstruction(field);
   // Is this push necessary?
   schemaElements_.push(StackEntry(tag, field));
@@ -856,7 +918,10 @@ TemplateBuilder::parseFiller(const std::string & tag, const AttributeMap& attrib
   getOptionalAttribute(attributes, "name", name);
   std::string ns;
   getOptionalAttribute(attributes, "ns", ns);
-  FieldInstructionPtr field(new FieldInstructionFiller(name, ns));
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionPtr field(new FieldInstructionFiller(registry_->fieldRegistry(), name, ns, type, typeNs));
   schemaElements_.top().second->addInstruction(field);
   // Is this push necessary?
   schemaElements_.push(StackEntry(tag, field));

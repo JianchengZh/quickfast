@@ -61,6 +61,13 @@ namespace QuickFAST
       /// @param ns is the namespace for the type.
       virtual void setApplicationType(const std::string & type, const std::string & ns);
 
+      /// @brief provide access to the application type
+      ///
+      /// @param[out] type names the type
+      /// @param[out] ns qualifies the type name
+      /// @returns true if this element knows its application type
+      virtual bool getApplicationType(std::string & type, std::string & ns)const;
+
       /// @brief Implement &lt;length> within a &lt;sequence>
       ///
       /// @param field points to the field to be added.  The smart pointer to this
@@ -85,9 +92,6 @@ namespace QuickFAST
       ///
       /// The exponent field instruction may have special operations or properties.
       virtual void setExponentInstruction(FieldInstructionPtr exponent);
-
-      /// @brief Get the exponent field instruction.
-      virtual bool getExponentInstruction(FieldInstructionCPtr & exponent) const;
     };
   }
 }

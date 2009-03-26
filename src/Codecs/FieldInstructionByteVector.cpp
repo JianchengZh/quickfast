@@ -9,9 +9,12 @@ using namespace ::QuickFAST;
 using namespace ::QuickFAST::Codecs;
 
 FieldInstructionByteVector::FieldInstructionByteVector(
-  const std::string & name,
-  const std::string & fieldNamespace)
-  : FieldInstructionBlob(name, fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
+  : FieldInstructionBlob(fieldRegistry, name, fieldNamespace, type, typeNamespace)
 {
   initialValue_ = Messages::FieldByteVector::createNull();
 }

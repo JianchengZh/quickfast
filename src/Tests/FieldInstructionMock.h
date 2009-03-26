@@ -8,6 +8,11 @@
 #define FIELDINSTRUCTIONMOCK_H
 #include <Codecs/FieldInstruction.h>
 
+namespace
+{
+  Messages::FieldRegistry fieldRegistry;
+}
+
 namespace QuickFAST{
   namespace Tests{
     /// Mock Field instruction that counts function calls
@@ -15,7 +20,7 @@ namespace QuickFAST{
     {
     public:
       FieldInstructionMock()
-        : Codecs::FieldInstruction("mock","testing")
+        : Codecs::FieldInstruction(fieldRegistry, "mock","testing", "type", "typeNS")
         , calledDecodeNop_(0)
         , calledDecodeConstant_(0)
         , calledDecodeDefault_(0)

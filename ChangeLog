@@ -1,3 +1,55 @@
+Thu Mar 26 21:15:29 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
+
+        * src/Codecs/Decoder.h:
+        * src/Codecs/Decoder.cpp:
+        * src/Codecs/FieldInstruction.h:
+        * src/Codecs/FieldInstruction.cpp:
+        * src/Codecs/FieldInstructionAscii.h:
+        * src/Codecs/FieldInstructionAscii.cpp:
+        * src/Codecs/FieldInstructionBitMap.h:
+        * src/Codecs/FieldInstructionBitMap.cpp:
+        * src/Codecs/FieldInstructionBlob.h:
+        * src/Codecs/FieldInstructionBlob.cpp:
+        * src/Codecs/FieldInstructionByteVector.h:
+        * src/Codecs/FieldInstructionByteVector.cpp:
+        * src/Codecs/FieldInstructionDecimal.h:
+        * src/Codecs/FieldInstructionDecimal.cpp:
+        * src/Codecs/FieldInstructionFiller.h:
+        * src/Codecs/FieldInstructionFiller.cpp:
+        * src/Codecs/FieldInstructionGroup.h:
+        * src/Codecs/FieldInstructionGroup.cpp:
+        * src/Codecs/FieldInstructionInteger.h:
+        * src/Codecs/FieldInstructionSequence.h:
+        * src/Codecs/FieldInstructionSequence.cpp:
+        * src/Codecs/FieldInstructionTemplateRef.h:
+        * src/Codecs/FieldInstructionTemplateRef.cpp:
+        * src/Codecs/FieldInstructionUtf8.h:
+        * src/Codecs/FieldInstructionUtf8.cpp:
+        * src/Codecs/FieldOp.h:
+        * src/Codecs/FieldOp.cpp:
+        * src/Codecs/PresenceMap.h:
+        * src/Codecs/PresenceMap.cpp:
+        * src/Codecs/SchemaElement.h:
+        * src/Codecs/SchemaElement.cpp:
+        * src/Codecs/SegmentBody.h:
+        * src/Codecs/SegmentBody.cpp:
+        * src/Codecs/TemplateRegistry.h:
+        * src/Codecs/TemplateRegistry.cpp:
+        * src/Codecs/XMLTemplateParser.cpp:
+
+        * src/Messages/FieldIdentity.h:
+        * src/Messages/FieldIdentity.cpp:
+        * src/Messages/FieldRegistry.h:
+        * src/Messages/FieldRegistry.cpp:
+        * src/Messages/FieldRegistry_fwd.h:
+
+        * src/Tests/FieldInstructionMock.h:
+        * src/Tests/testFieldInstructions.cpp:
+        * src/Tests/testFieldOperations.cpp:
+        * src/Tests/testRoundTrip.cpp:
+        * src/Tests/testXMLTemplateParser.cpp:
+        FieldRegistry is not working yet, but this is a clean point.
+
 Thu Mar 26 16:01:36 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
 
         * QuickFASTDotNetApplication.mpb:

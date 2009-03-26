@@ -16,9 +16,12 @@ using namespace ::QuickFAST;
 using namespace ::QuickFAST::Codecs;
 
 FieldInstructionBitMap::FieldInstructionBitMap(
-  const std::string & name,
-  const std::string & fieldNamespace)
-: FieldInstruction(name, fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
+  : FieldInstruction(fieldRegistry, name, fieldNamespace, type, typeNamespace)
 {
   initialValue_ = Messages::FieldBitMap::createNull();
 }

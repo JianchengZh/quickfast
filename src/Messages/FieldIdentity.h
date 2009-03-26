@@ -22,29 +22,40 @@ namespace QuickFAST{
       /// @brief Construct the FieldIdentity
       /// @param name the localname for the field
       /// @param fieldNamespace the namespace in which the localname is defined
+      /// @param applicationType the record type containing this field
+      /// @param applicatoinTypenamespace the namespace in which the application type is defined
       explicit FieldIdentity(
-        const std::string & name, const std::string & fieldNamespace = "")
+        const std::string & name,
+        const std::string & fieldNamespace = "",
+        const std::string & applicationType = "",
+        const std::string & applicationTypeNamespace = "")
         : localName_(name)
         , fieldNamespace_(fieldNamespace)
-        , mandatory_(true)
+        , applicationType_(applicationType)
+        , applicationTypeNamespace_(applicationTypeNamespace)
+//        , mandatory_(true)
         , refcount_(0)
       {
-        qualifyName();
+        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
       }
 
       /// @brief Construct an anonomous FieldIdentity
       FieldIdentity();
 
-    private:
+//    private:
       /// @brief private constructor prevents stack or static allocations, or embedding
-      ~FieldIdentity();
+      ~FieldIdentity()
+      {
+      }
     public:
+
+/*
       /// @brief set name after construction
       /// @param name the localname for the field
       void setName(const std::string & name)
       {
         localName_ = name;
-        qualifyName();
+        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
       }
 
       /// @brief Set Namespace after construction
@@ -52,17 +63,34 @@ namespace QuickFAST{
       void setNamespace(const std::string & fieldNamespace)
       {
         fieldNamespace_ = fieldNamespace;
-        qualifyName();
+        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
       }
+
+      /// @brief set name after construction
+      /// @param name the localname for the field
+      void setApplicationType(const std::string & type)
+      {
+        applicationType_ = type;
+        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
+      }
+
+      /// @brief Set Namespace after construction
+      /// @param fieldNamespace the namespace in which the localname is defined
+      void setApplicationTypeNamespace(const std::string & applicationTypeNamespace)
+      {
+        applicationTypeNamespace_ = applicationTypeNamespace;
+        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
+      }
+*/
 
       /// @brief Copy construct the FieldIdentity
       /// @param rhs is the FieldIdentity from which to copy
       FieldIdentity(const FieldIdentity & rhs)
         : localName_(rhs.localName_)
         , fieldNamespace_(rhs.fieldNamespace_)
-        , fullName_(rhs.fullName_)
+        , qualifiedName_(rhs.qualifiedName_)
         , id_(rhs.id_)
-        , mandatory_(rhs.mandatory_)
+//        , mandatory_(rhs.mandatory_)
       {
       }
 
@@ -77,7 +105,7 @@ namespace QuickFAST{
       /// @returns the name qualified by the namespace (from the cached value)
       const std::string & name()const
       {
-        return fullName_;
+        return qualifiedName_;
       }
 
       /// @brief get the localname of a field
@@ -93,6 +121,16 @@ namespace QuickFAST{
       {
         return fieldNamespace_;
       }
+      const std::string & getTypeName() const
+      {
+        return applicationType_;
+      }
+
+      const std::string & getTypeNamespace()const
+      {
+        return applicationTypeNamespace_;
+      }
+
 
       /// @brief get the field id
       /// @returns the id assigned to this field.
@@ -100,11 +138,12 @@ namespace QuickFAST{
       {
         return id_;
       }
-
+/*
       /// @brief set the mandatory flag for this field.
       /// @param mandatory is true if the field must appear in the application data type
       void setMandatory(bool mandatory)
       {
+        int todo_Find_a_new_home;
         mandatory_ = mandatory;
       }
 
@@ -114,31 +153,33 @@ namespace QuickFAST{
       {
         return mandatory_;
       }
+*/
+      static void qualifyName(
+        std::string & qualifiedName,
+        const std::string & localName,
+        const std::string & fieldNamespace = "",
+        const std::string & applicationType = "",
+        const std::string & applicationTypeNamespace = "");
 
-    private:
-      void qualifyName()
-      {
-        if(fieldNamespace_.empty())
-        {
-          fullName_ = localName_;
-        }
-        else
-        {
-          fullName_ = fieldNamespace_ + "::" + localName_;
-        }
-      }
     private:
       std::string localName_;
       std::string fieldNamespace_;
-      std::string fullName_; // cached for performance
+      std::string applicationType_;
+      std::string applicationTypeNamespace_;
+
+      std::string qualifiedName_; // cached for performance
       field_id_t id_;
-      bool mandatory_;
+//      bool mandatory_;
     private:
       friend void QuickFAST_Export intrusive_ptr_add_ref(const FieldIdentity * ptr);
       friend void QuickFAST_Export intrusive_ptr_release(const FieldIdentity * ptr);
       friend void QuickFAST_Export intrusive_ptr_add_ref(FieldIdentity * ptr);
       friend void QuickFAST_Export intrusive_ptr_release(FieldIdentity * ptr);
-      virtual void freeFieldIdentity()const;
+      void freeFieldIdentity()const
+      {
+        delete this;
+      }
+
       mutable unsigned long refcount_;
     };
 

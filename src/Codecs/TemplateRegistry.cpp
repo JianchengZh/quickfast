@@ -32,11 +32,11 @@ void
 TemplateRegistry::finalize()
 {
   DictionaryIndexer indexer;
-  for(MutableTemplates::iterator mit = mutableTemplates_.begin();
-    mit != mutableTemplates_.end();
-    ++mit)
+  for(MutableTemplates::iterator pTemplate = mutableTemplates_.begin();
+    pTemplate != mutableTemplates_.end();
+    ++pTemplate)
   {
-    (*mit)->indexDictionaries(
+    (*pTemplate)->buildIndexes(
       indexer,
       dictionaryName_,
       "", // typeref n/a at <templates> level

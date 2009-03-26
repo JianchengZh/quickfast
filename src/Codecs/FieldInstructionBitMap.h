@@ -19,8 +19,11 @@ namespace QuickFAST{
       /// @param name is the local name
       /// @param fieldNamespace is the namespace to qualify this name
       FieldInstructionBitMap(
+        Messages::FieldRegistry & fieldRegistry,
         const std::string & name,
-        const std::string & fieldNamespace);
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace);
 
       /// @brief construct anonomous field instruction
       FieldInstructionBitMap();

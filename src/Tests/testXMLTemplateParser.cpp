@@ -46,22 +46,22 @@ BOOST_AUTO_TEST_CASE(testXMLTemplateParser)
   BOOST_CHECK_EQUAL(template203->getId(), template_id_t(203));
   BOOST_CHECK_EQUAL(template203->getTemplateName(), "Test1");
   Codecs::FieldInstructionCPtr instruction;
-  BOOST_CHECK(!template203->getInstruction("Int2", instruction));
-  BOOST_CHECK(template203->getInstruction("Int1", instruction));
+  BOOST_CHECK(!template203->getInstruction("///Int2", instruction));
+  BOOST_REQUIRE(template203->getInstruction("///Int1", instruction));
   BOOST_CHECK_EQUAL(instruction->getId(), field_id_t("23"));
-  BOOST_CHECK_EQUAL(instruction->getName(), "Int1");
+  BOOST_CHECK_EQUAL(instruction->getName(), "///Int1");
   Codecs::FieldOpCPtr fieldOp;
   BOOST_CHECK(instruction->getFieldOp(fieldOp));
   // ...
 
-  BOOST_CHECK(template203->getInstruction("UInt1", instruction));
+  BOOST_CHECK(template203->getInstruction("///UInt1", instruction));
   BOOST_CHECK_EQUAL(instruction->getId(), field_id_t());
-  BOOST_CHECK_EQUAL(instruction->getName(), "UInt1");
+  BOOST_CHECK_EQUAL(instruction->getName(), "///UInt1");
   BOOST_CHECK(!instruction->getFieldOp(fieldOp));
 
-  BOOST_CHECK(template203->getInstruction("Decimal1", instruction));
+  BOOST_CHECK(template203->getInstruction("///Decimal1", instruction));
   BOOST_CHECK_EQUAL(instruction->getId(), field_id_t());
-  BOOST_CHECK_EQUAL(instruction->getName(), "Decimal1");
+  BOOST_CHECK_EQUAL(instruction->getName(), "///Decimal1");
   BOOST_CHECK(!instruction->getFieldOp(fieldOp));
   {
     Codecs::FieldInstructionCPtr exponent, mantissa;

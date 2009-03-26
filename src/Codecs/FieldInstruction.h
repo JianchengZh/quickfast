@@ -17,6 +17,7 @@
 #include <Messages/Message_fwd.h>
 #include <Messages/DecodedFields_fwd.h>
 #include <Messages/FieldIdentity.h>
+#include <Messages/FieldRegistry.h>
 #include <Codecs/SchemaElement.h>
 #include <Codecs/DataSource.h>
 #include <Codecs/Context.h>
@@ -62,7 +63,12 @@ namespace QuickFAST{
       /// @brief Derived class can constuct given a name and namespace
       /// @param name is the localname for this field
       /// @param fieldNamespace qualifies localname
-      FieldInstruction(const std::string & name, const std::string & fieldNamespace);
+      FieldInstruction(
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace);
 
       /// @brief Derived class can also construct an anonymous Field Instruction
       FieldInstruction();
@@ -77,6 +83,7 @@ namespace QuickFAST{
         identity_->setId(id);
       }
 
+#if 0
       /// @brief set the name of this field instruction after construction
       /// @param name is the localname for this field
       void setName(const std::string & name)
@@ -90,6 +97,7 @@ namespace QuickFAST{
       {
         identity_->setNamespace(fieldNamespace);
       }
+#endif
 
       /// @brief Indicate that the field is mandatory in the application record.
       /// Default if not specified is true.
@@ -151,7 +159,8 @@ namespace QuickFAST{
       /// @returns true if the field is mandatory.
       bool isMandatory()const
       {
-        return identity_->mandatory();
+        return mandatory_;
+//        return identity_->mandatory();
       }
 
       /// @brief Implement the dictionary= attribute.
@@ -187,7 +196,7 @@ namespace QuickFAST{
       /// @param dictionaryName is the parent's dictionary name (inherited unless overridden)
       /// @param typeName is the application type for this instruction
       /// @param typeNamespace is the namespace to qualify the application type.
-      virtual void indexDictionaries(
+      virtual void buildIndexes(
         DictionaryIndexer & indexer,
         const std::string & dictionaryName,
         const std::string & typeName,
@@ -559,6 +568,9 @@ namespace QuickFAST{
     protected:
       /// Identify information for the fields to be Xcoded by this instruction
       Messages::FieldIdentityPtr identity_;
+
+      /// Is this field required in the application message?
+      bool mandatory_;
       /// Application type associated with this instruction
       std::string applicationType_;
       /// Namespace in which the application type is defined.

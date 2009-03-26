@@ -13,9 +13,12 @@ using namespace ::QuickFAST;
 using namespace ::QuickFAST::Codecs;
 
 FieldInstructionGroup::FieldInstructionGroup(
-  const std::string & name,
-  const std::string & fieldNamespace)
-  : FieldInstruction(name, fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
+  : FieldInstruction(fieldRegistry, name, fieldNamespace, type, typeNamespace)
 {
 }
 
@@ -144,12 +147,12 @@ FieldInstructionGroup::fieldCount(const SegmentBody & parent)const
 }
 
 void
-FieldInstructionGroup::indexDictionaries(
+FieldInstructionGroup::buildIndexes(
   DictionaryIndexer & indexer,
   const std::string & dictionaryName,
   const std::string & typeName,
   const std::string & typeNamespace)
 {
-  segmentBody_->indexDictionaries(indexer, dictionaryName, typeName, typeNamespace);
+  segmentBody_->buildIndexes(indexer, dictionaryName, typeName, typeNamespace);
 }
 

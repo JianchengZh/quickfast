@@ -19,7 +19,7 @@ FieldOp::FieldOp()
 }
 
 void
-FieldOp::indexDictionaries(
+FieldOp::buildIndexes(
   DictionaryIndexer & indexer,
   const std::string & dictionaryName,
   const std::string & typeName,

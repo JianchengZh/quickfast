@@ -13,6 +13,7 @@
 #include <Codecs/DataDestination.h>
 #include <Messages/Message.h>
 #include <Messages/Field.h>
+#include <Messages/FieldRegistry_fwd.h>
 
 #include <Common/Profiler.h>
 
@@ -33,8 +34,11 @@ namespace QuickFAST{
       /// @param name is the local name
       /// @param fieldNamespace is the namespace to qualify this name
       FieldInstructionInteger(
+        Messages::FieldRegistry & fieldRegistry,
         const std::string & name,
-        const std::string & fieldNamespace);
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace);
 
       /// @brief construct anonomous field instruction
       FieldInstructionInteger();
@@ -141,9 +145,12 @@ namespace QuickFAST{
     template<typename INTEGER_TYPE, typename FIELD_CLASS, bool SIGNED>
     FieldInstructionInteger<INTEGER_TYPE, FIELD_CLASS, SIGNED>::
     FieldInstructionInteger(
-          const std::string & name,
-          const std::string & fieldNamespace)
-      : FieldInstruction(name, fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
+      : FieldInstruction(fieldRegistry, name, fieldNamespace, type, typeNamespace)
       , typedValue_(INTEGER_TYPE(0))
       , initialField_(FIELD_CLASS::create(0))
     {

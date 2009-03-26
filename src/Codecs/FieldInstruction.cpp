@@ -13,14 +13,21 @@ using namespace ::QuickFAST;
 using namespace ::QuickFAST::Codecs;
 
 FieldInstruction::FieldInstruction(
-      const std::string & name, const std::string & fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
   : identity_(new Messages::FieldIdentity(name, fieldNamespace))
+  , mandatory_(true)
   , fieldOp_(new FieldOpNop)
 {
+  int todo;
 }
 
 FieldInstruction::FieldInstruction()
   : identity_(new Messages::FieldIdentity)
+  , mandatory_(true)
   , fieldOp_(new FieldOpNop)
 {
 }
@@ -32,7 +39,8 @@ FieldInstruction::~FieldInstruction()
 void
 FieldInstruction::setPresence(bool mandatory)
 {
-  identity_->setMandatory(mandatory);
+  mandatory_ = mandatory;
+//  identity_->setMandatory(mandatory);
 }
 
 void
@@ -59,7 +67,7 @@ FieldInstruction::getFieldOp(FieldOpCPtr & fieldOp) const
 size_t
 FieldInstruction::presenceMapBitsRequired()const
 {
-  if(fieldOp_->usesPresenceMap(identity_->mandatory()))
+  if(fieldOp_->usesPresenceMap(mandatory_/*identity_->mandatory()*/))
   {
     return maxPresenceMapBits();
   }
@@ -280,13 +288,13 @@ FieldInstruction::decodeByteVector(
 }
 
 void
-FieldInstruction::indexDictionaries(
+FieldInstruction::buildIndexes(
   DictionaryIndexer & indexer,
   const std::string & dictionaryName,
   const std::string & typeName,
   const std::string & typeNamespace)
 {
-  fieldOp_->indexDictionaries(
+  fieldOp_->buildIndexes(
     indexer,
     dictionaryName,
     typeName,

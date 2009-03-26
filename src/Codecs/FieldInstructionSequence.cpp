@@ -16,9 +16,12 @@ using namespace ::QuickFAST;
 using namespace ::QuickFAST::Codecs;
 
 FieldInstructionSequence::FieldInstructionSequence(
-  const std::string & name,
-  const std::string & fieldNamespace)
-  : FieldInstruction(name, fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
+  : FieldInstruction(fieldRegistry, name, fieldNamespace, type, typeNamespace)
 {
 }
 
@@ -153,12 +156,12 @@ FieldInstructionSequence::interpretValue(const std::string & value)
 }
 
 void
-FieldInstructionSequence::indexDictionaries(
+FieldInstructionSequence::buildIndexes(
   DictionaryIndexer & indexer,
   const std::string & dictionaryName,
   const std::string & typeName,
   const std::string & typeNamespace)
 {
-  segment_->indexDictionaries(indexer, dictionaryName, typeName, typeNamespace);
+  segment_->buildIndexes(indexer, dictionaryName, typeName, typeNamespace);
 }
 

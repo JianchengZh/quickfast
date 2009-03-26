@@ -96,6 +96,7 @@ namespace QuickFAST{
     private:
       /// false makes the decoder more forgiving
       bool strict_;
+      bool arcaMode_;
     };
   }
 }

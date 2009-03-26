@@ -18,9 +18,12 @@ using namespace ::QuickFAST;
 using namespace ::QuickFAST::Codecs;
 
 FieldInstructionDecimal::FieldInstructionDecimal(
-      const std::string & name,
-      const std::string & fieldNamespace)
-  : FieldInstruction(name, fieldNamespace)
+        Messages::FieldRegistry & fieldRegistry,
+        const std::string & name,
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace)
+  : FieldInstruction(fieldRegistry, name, fieldNamespace, type, typeNamespace)
   , typedExponent_(0)
   , typedMantissa_(0)
   , typedValue_(0,0)
@@ -659,17 +662,17 @@ FieldInstructionDecimal::maxPresenceMapBits()const
 }
 
 void
-FieldInstructionDecimal::indexDictionaries(
+FieldInstructionDecimal::buildIndexes(
   DictionaryIndexer & indexer,
   const std::string & dictionaryName,
   const std::string & typeName,
   const std::string & typeNamespace)
 {
-  FieldInstruction::indexDictionaries(indexer, dictionaryName, typeName, typeNamespace);
+  FieldInstruction::buildIndexes(indexer, dictionaryName, typeName, typeNamespace);
   if(bool(exponentInstruction_))
   {
-    exponentInstruction_->indexDictionaries(indexer, dictionaryName, typeName, typeNamespace);
-    mantissaInstruction_->indexDictionaries(indexer, dictionaryName, typeName, typeNamespace);
+    exponentInstruction_->buildIndexes(indexer, dictionaryName, typeName, typeNamespace);
+    mantissaInstruction_->buildIndexes(indexer, dictionaryName, typeName, typeNamespace);
   }
 }
 

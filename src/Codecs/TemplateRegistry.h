@@ -13,6 +13,7 @@
 #include <Common/Types.h>
 #include <Codecs/SchemaElement.h>
 #include <Codecs/Template_fwd.h>
+#include <Messages/FieldRegistry.h>
 
 namespace QuickFAST{
   namespace Codecs{
@@ -178,10 +179,21 @@ namespace QuickFAST{
         return dictionaryName_;
       }
 
+      Messages::FieldRegistry & fieldRegistry()
+      {
+        return fieldRegistry_;
+      }
+
+      const Messages::FieldRegistry & fieldRegistry() const
+      {
+        return fieldRegistry_;
+      }
+
     private:
       TemplateIdMap templates_;
       typedef std::vector<TemplatePtr> MutableTemplates;
       MutableTemplates mutableTemplates_;
+      Messages::FieldRegistry fieldRegistry_;
       size_t presenceMapBits_;
       size_t dictionarySize_;
       size_t maxFieldCount_;

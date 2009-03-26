@@ -10,59 +10,49 @@
 using namespace QuickFAST;
 using namespace Messages;
 
-static
-std::string anonName(void * address)
+namespace
 {
-  return boost::lexical_cast<std::string>(address);
+  std::string anonName(void * address)
+  {
+    return boost::lexical_cast<std::string>(address);
+  }
 }
 
 FieldIdentity::FieldIdentity()
-  : mandatory_(true)
-  , localName_(anonName(this))
+  : /*mandatory_(true)
+  , */localName_(anonName(this))
   , refcount_(0)
 {
-  qualifyName();
-}
-
-FieldIdentity::~FieldIdentity()
-{
+  qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
 }
 
 void
-FieldIdentity::freeFieldIdentity()const
+FieldIdentity::qualifyName(
+  std::string & qualifiedName,
+  const std::string & localName,
+  const std::string & fieldNamespace,
+  const std::string & applicationType,
+  const std::string & applicationTypeNamespace
+  )
 {
-  delete this;
-}
-
-#if 0
-
-void
-Messages::intrusive_ptr_add_ref(const Messages::FieldIdentity * ptr)
-{
-  ++ptr->refcount_;
-}
-
-void
-Messages::intrusive_ptr_release(const Messages::FieldIdentity * ptr)
-{
-  if(--ptr->refcount_ == 0)
+  if(!applicationTypeNamespace.empty())
   {
-    ptr->freeFieldIdentity();
+    qualifiedName = applicationTypeNamespace;
   }
-}
-void
-Messages::intrusive_ptr_add_ref(Messages::FieldIdentity * ptr)
-{
-  ++ptr->refcount_;
-}
-
-void
-Messages::intrusive_ptr_release(Messages::FieldIdentity * ptr)
-{
-  if(--ptr->refcount_ == 0)
+  else
   {
-    ptr->freeFieldIdentity();
+    qualifiedName.clear();
   }
+  qualifiedName += '/';
+  if(!applicationType.empty())
+  {
+    qualifiedName += applicationType;
+  }
+  qualifiedName += '/';
+  if(!fieldNamespace.empty())
+  {
+    qualifiedName += fieldNamespace;
+  }
+  qualifiedName += '/';
+  qualifiedName += localName;
 }
-
-#endif

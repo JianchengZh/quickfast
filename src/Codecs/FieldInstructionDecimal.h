@@ -20,8 +20,11 @@ namespace QuickFAST{
       /// @param name is the local name
       /// @param fieldNamespace is the namespace to qualify this name
       FieldInstructionDecimal(
+        Messages::FieldRegistry & fieldRegistry,
         const std::string & name,
-        const std::string & fieldNamespace);
+        const std::string & fieldNamespace,
+        const std::string & type,
+        const std::string & typeNamespace);
 
       /// @brief construct anonomous field instruction
       FieldInstructionDecimal();
@@ -37,14 +40,6 @@ namespace QuickFAST{
       virtual void setMantissaInstruction(FieldInstructionPtr mantissa)
       {
         mantissaInstruction_ = mantissa;
-        if(!bool(exponentInstruction_))
-        {
-          exponentInstruction_.reset(new FieldInstructionExponent(identity_->getLocalName() + "|decimal_exponent", identity_->getNamespace()));
-          if(!isMandatory())
-          {
-            exponentInstruction_->setPresence(false);
-          }
-        }
       }
 
       /// @brief Get the mantissa field instruction.
@@ -63,10 +58,6 @@ namespace QuickFAST{
         if(!isMandatory())
         {
           exponentInstruction_->setPresence(false);
-        }
-        if(!bool(mantissaInstruction_))
-        {
-          mantissaInstruction_.reset(new FieldInstructionMantissa(identity_->name() + "|decimal_mantissa", identity_->getNamespace()));
         }
       }
 
@@ -146,7 +137,7 @@ namespace QuickFAST{
         Codecs::Encoder & encoder,
         const Messages::FieldSet & fieldSet) const;
 
-      virtual void indexDictionaries(
+      virtual void buildIndexes(
         DictionaryIndexer & indexer,
         const std::string & dictionaryName,
         const std::string & typeName,

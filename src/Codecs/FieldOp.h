@@ -145,7 +145,7 @@ namespace QuickFAST{
       /// @param typeNamespace is the namespace to qualify the application type.
       /// @param fieldName is the name of this field.
       /// @param fieldNamespace qualifies fieldName
-      void indexDictionaries(
+      void buildIndexes(
         DictionaryIndexer & indexer,
         const std::string & dictionaryName,
         const std::string & typeName,

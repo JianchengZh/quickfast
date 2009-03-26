@@ -18,6 +18,7 @@ using namespace ::QuickFAST::Codecs;
 Decoder::Decoder(Codecs::TemplateRegistryPtr registry)
 : Context(registry)
 , strict_(true)
+, arcaMode_(true) // TODO: temporarily true
 {
 }
 
@@ -49,7 +50,7 @@ Decoder::decodeSegment(
     return false;
   }
 
-  if(pmap.checkNextField())
+  if(arcaMode_ || pmap.checkNextField())
   {
     static const std::string tid("templateID");
     source.beginField(tid);
