@@ -9,7 +9,7 @@
 #include <Common/QuickFAST_Export.h>
 
 /// enable or disable generation of profiler code.
-#define PROFILER_ENABLEx
+#define PROFILER_ENABLE
 
 
 // Note: boost's microsecond_clock was slow enough to skew the results

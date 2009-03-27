@@ -61,7 +61,7 @@ namespace QuickFAST{
       /// The FieldCPtr is copied, not the actual Field object.
       /// @param identity identifies this field
       /// @param value is the value to be assigned.
-      void addField(const FieldIdentityCPtr & identity, const FieldCPtr & value);
+      void addField(const FieldRegistry & registry, FieldRegistry::Index index, const FieldCPtr & value);
 
 
       /// @brief Get the value of the specified field.
@@ -69,12 +69,16 @@ namespace QuickFAST{
       /// @param[out] value is the value that was found.
       /// @returns true if the field was found and has a value;
       bool getField(const std::string &name, FieldCPtr & value) const;
-
+      bool getField(const FieldRegistry & registry, FieldRegistry::Index index, FieldCPtr & value) const;
       /// @brief Get the identity information for the specified field
       /// @param[in] name identifies the desired field
       /// @param[out] identity is the information for the field that was found
       /// @returns true if the field was found
-      bool getIdentity(const std::string &name, FieldIdentityCPtr & identity) const;
+      bool getIdentity(const std::string &name, FieldIdentityCPtr & identity) const
+      {
+        throw std::runtime_error("Implementation error: called obsolete method FieldSet::getIdentity.");
+      }
+      bool getIdentity(const std::string &name, const FieldIdentity *& identity) const;
 
       /// @brief support iterating through Fields in this FieldSet.
       const_iterator begin() const

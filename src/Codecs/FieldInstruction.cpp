@@ -18,19 +18,25 @@ FieldInstruction::FieldInstruction(
         const std::string & fieldNamespace,
         const std::string & type,
         const std::string & typeNamespace)
-  : identity_(new Messages::FieldIdentity(name, fieldNamespace))
+  : fieldRegistry_(fieldRegistry)
+  , fieldIndex_(fieldRegistry_.addFieldIdentity(name, fieldNamespace, type, typeNamespace))
+  //identity_(new Messages::FieldIdentity(name, fieldNamespace))
   , mandatory_(true)
   , fieldOp_(new FieldOpNop)
 {
   int todo;
 }
 
+/*
 FieldInstruction::FieldInstruction()
-  : identity_(new Messages::FieldIdentity)
+  : fieldRegistry_(fieldRegistry)
+  , fieldIndex_(Messages::FieldRegistry::UNKNOWN)
+//  identity_(new Messages::FieldIdentity)
   , mandatory_(true)
   , fieldOp_(new FieldOpNop)
 {
 }
+*/
 
 FieldInstruction::~FieldInstruction()
 {
@@ -299,8 +305,8 @@ FieldInstruction::buildIndexes(
     dictionaryName,
     typeName,
     typeNamespace,
-    identity_->getLocalName(),
-    identity_->getNamespace());
+    fieldRegistry_.get(fieldIndex_).getLocalName(),
+    fieldRegistry_.get(fieldIndex_).getNamespace());
 }
 
 void

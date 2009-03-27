@@ -71,7 +71,8 @@ namespace QuickFAST{
         const std::string & typeNamespace);
 
       /// @brief Derived class can also construct an anonymous Field Instruction
-      FieldInstruction();
+//      FieldInstruction();
+
     public:
       /// @brief a typical virtual destructor.
       virtual ~FieldInstruction();
@@ -80,7 +81,8 @@ namespace QuickFAST{
       /// @param id is the id for this field.
       void setId(const field_id_t & id)
       {
-        identity_->setId(id);
+        fieldRegistry_.get(fieldIndex_).setId(id);
+//        fieldRegistry_.get(fieldIndex_).setId(id);
       }
 
 #if 0
@@ -88,14 +90,14 @@ namespace QuickFAST{
       /// @param name is the localname for this field
       void setName(const std::string & name)
       {
-        identity_->setName(name);
+        fieldRegistry_.get(fieldIndex_).setName(name);
       }
 
       /// @brief set the namespace of this field instruction after construction
       /// @param fieldNamespace qualifies localname
       void setNamespace(const std::string & fieldNamespace)
       {
-        identity_->setNamespace(fieldNamespace);
+        fieldRegistry_.get(fieldIndex_).setNamespace(fieldNamespace);
       }
 #endif
 
@@ -137,7 +139,7 @@ namespace QuickFAST{
       /// @returns the field name.
       const std::string & getName() const
       {
-        return identity_->name();
+        return fieldRegistry_.get(fieldIndex_).name();
       }
 
       /// @brief Retrieve the field's id
@@ -145,14 +147,14 @@ namespace QuickFAST{
       const field_id_t &
         getId()const
       {
-        return identity_->id();
+        return fieldRegistry_.get(fieldIndex_).id();
       }
 
       /// @brief Retrieve the field's identity.
       /// @returns the field identity.
-      Messages::FieldIdentityCPtr getIdentity()const
+      const Messages::FieldIdentity & getIdentity()const
       {
-        return identity_;
+        return fieldRegistry_.get(fieldIndex_);
       }
 
       /// @brief Is the field mandatory in the application record?
@@ -160,8 +162,13 @@ namespace QuickFAST{
       bool isMandatory()const
       {
         return mandatory_;
-//        return identity_->mandatory();
       }
+
+      Messages::FieldRegistry::Index getFieldIndex() const
+      {
+        return fieldIndex_;
+      }
+
 
       /// @brief Implement the dictionary= attribute.
       ///
@@ -567,7 +574,9 @@ namespace QuickFAST{
 
     protected:
       /// Identify information for the fields to be Xcoded by this instruction
-      Messages::FieldIdentityPtr identity_;
+//      Messages::FieldIdentityPtr identity_;
+      Messages::FieldRegistry & fieldRegistry_;
+      Messages::FieldRegistry::Index fieldIndex_;
 
       /// Is this field required in the application message?
       bool mandatory_;

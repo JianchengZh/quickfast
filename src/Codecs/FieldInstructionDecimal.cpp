@@ -32,6 +32,7 @@ FieldInstructionDecimal::FieldInstructionDecimal(
 {
 }
 
+#if 0
 FieldInstructionDecimal::FieldInstructionDecimal()
   : typedExponent_(0)
   , typedMantissa_(0)
@@ -40,6 +41,7 @@ FieldInstructionDecimal::FieldInstructionDecimal()
 //  , exponentInstruction_(new FieldInstructionExponent(identity_->getLocalName() + "|decimal_exponent", identity_->getNamespace()))
 {
 }
+#endif
 
 FieldInstructionDecimal::~FieldInstructionDecimal()
 {
@@ -104,7 +106,10 @@ FieldInstructionDecimal::decodeNop(
     NESTED_PROFILE_PAUSE(1);
     Decimal value(mantissa, exponent, false);
     Messages::FieldCPtr field(Messages::FieldDecimal::create(value));
-    fieldSet.addField(identity_, field);
+    fieldSet.addField(
+      fieldRegistry_,
+      fieldIndex_,
+      field);
   }
   else
   {
@@ -122,7 +127,8 @@ FieldInstructionDecimal::decodeNop(
     Decimal value(mantissa, exponent);
     Messages::FieldCPtr newField(Messages::FieldDecimal::create(value));
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       newField);
   }
   return true;
@@ -140,7 +146,8 @@ FieldInstructionDecimal::decodeConstant(
   {
     Messages::FieldCPtr newField(Messages::FieldDecimal::create(typedValue_));
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       newField);
   }
   return true;
@@ -170,7 +177,8 @@ FieldInstructionDecimal::decodeDefault(
     Decimal value(mantissa, exponent);
     Messages::FieldCPtr newField(Messages::FieldDecimal::create(value));
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       newField);
   }
   else // field not in stream
@@ -179,7 +187,8 @@ FieldInstructionDecimal::decodeDefault(
     {
       Messages::FieldCPtr newField(Messages::FieldDecimal::create(typedValue_));
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         newField);
     }
     else if(isMandatory())
@@ -209,7 +218,8 @@ FieldInstructionDecimal::decodeCopy(
       Decimal value(mantissa, exponent, false);
       Messages::FieldCPtr newField(Messages::FieldDecimal::create(value));
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         newField);
       fieldOp_->setDictionaryValue(decoder, newField);
     }
@@ -227,7 +237,8 @@ FieldInstructionDecimal::decodeCopy(
         Decimal value(mantissa, exponent, false);
         Messages::FieldCPtr newField(Messages::FieldDecimal::create(value));
         fieldSet.addField(
-          identity_,
+          fieldRegistry_,
+          fieldIndex_,
           newField);
         fieldOp_->setDictionaryValue(decoder, newField);
       }
@@ -245,7 +256,8 @@ FieldInstructionDecimal::decodeCopy(
         if(previousField->isType(Messages::Field::DECIMAL))
         {
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             previousField);
         }
         else
@@ -269,7 +281,8 @@ FieldInstructionDecimal::decodeCopy(
       {
         Messages::FieldCPtr newField(Messages::FieldDecimal::create(typedValue_));
         fieldSet.addField(
-          identity_,
+          fieldRegistry_,
+          fieldIndex_,
           newField);
         fieldOp_->setDictionaryValue(decoder, newField);
       }
@@ -323,7 +336,8 @@ FieldInstructionDecimal::decodeDelta(
   value.setMantissa(mantissa_t(value.getMantissa() + mantissaDelta));
   Messages::FieldCPtr newField(Messages::FieldDecimal::create(value));
   fieldSet.addField(
-    identity_,
+    fieldRegistry_,
+    fieldIndex_,
     newField);
   fieldOp_->setDictionaryValue(decoder, newField);
   return true;
@@ -362,7 +376,7 @@ FieldInstructionDecimal::encodeNop(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Decimal value = field->toDecimal();
     exponent_t exponent = value.getExponent();
@@ -372,10 +386,16 @@ FieldInstructionDecimal::encodeNop(
     {
       Messages::FieldSet fieldSet(2);
       Messages::FieldCPtr exponentField(Messages::FieldInt32::create(exponent));
-      fieldSet.addField(exponentInstruction_->getIdentity(), exponentField);
+      fieldSet.addField(
+        fieldRegistry_,
+        exponentInstruction_->getFieldIndex(),
+        exponentField);
 
       Messages::FieldCPtr mantissaField(Messages::FieldInt64::create(mantissa));
-      fieldSet.addField(mantissaInstruction_->getIdentity(), mantissaField);
+      fieldSet.addField(
+        fieldRegistry_,
+        mantissaInstruction_->getFieldIndex(),
+        mantissaField);
 
       exponentInstruction_->encode(
         destination,
@@ -439,7 +459,7 @@ FieldInstructionDecimal::encodeConstant(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Decimal value = field->toDecimal();
     if(value != typedValue_)
@@ -471,7 +491,7 @@ FieldInstructionDecimal::encodeDefault(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Decimal value = field->toDecimal();
     if(value == typedValue_)
@@ -541,7 +561,7 @@ FieldInstructionDecimal::encodeCopy(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Decimal value = field->toDecimal();
 
@@ -613,7 +633,7 @@ FieldInstructionDecimal::encodeDelta(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Decimal value = field->toDecimal();
 

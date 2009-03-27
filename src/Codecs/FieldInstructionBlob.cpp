@@ -23,9 +23,11 @@ FieldInstructionBlob::FieldInstructionBlob(
 {
 }
 
+#if 0
 FieldInstructionBlob::FieldInstructionBlob()
 {
 }
+#endif
 
 FieldInstructionBlob::~FieldInstructionBlob()
 {
@@ -73,7 +75,10 @@ FieldInstructionBlob::decodeNop(
   }
   if(field)
   {
-    fieldSet.addField(identity_, field);
+    fieldSet.addField(
+      fieldRegistry_,
+      fieldIndex_,
+      field);
   }
   return true;
 }
@@ -89,7 +94,8 @@ FieldInstructionBlob::decodeConstant(
   if(isMandatory())
   {
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       initialValue_);
   }
   else
@@ -97,7 +103,8 @@ FieldInstructionBlob::decodeConstant(
     if(pmap.checkNextField())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         initialValue_);
     }
     else
@@ -126,7 +133,8 @@ FieldInstructionBlob::decodeDefault(
     if(field)
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
     }
     return true;
@@ -136,7 +144,8 @@ FieldInstructionBlob::decodeDefault(
     if(fieldOp_->hasValue())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         initialValue_);
     }
     else if(isMandatory())
@@ -167,7 +176,8 @@ FieldInstructionBlob::decodeCopy(
     if(field)
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
       fieldOp_->setDictionaryValue(decoder, field);
     }
@@ -183,7 +193,8 @@ FieldInstructionBlob::decodeCopy(
     if(bool(previousField) && previousField->isDefined())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         previousField);
     }
     else
@@ -247,7 +258,8 @@ FieldInstructionBlob::decodeDelta(
     Messages::FieldCPtr field = createField(
       deltaValue + previousValue.substr(deltaLength));
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       field);
     fieldOp_->setDictionaryValue(decoder, field);
   }
@@ -261,7 +273,8 @@ FieldInstructionBlob::decodeDelta(
     Messages::FieldCPtr field = createField(
       previousValue.substr(0, previousLength - deltaLength) + deltaValue);
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       field);
     fieldOp_->setDictionaryValue(decoder, field);
   }
@@ -307,7 +320,8 @@ FieldInstructionBlob::decodeTail(
       }
       Messages::FieldCPtr field = createField(previousValue.substr(0, previousLength - tailLength) + tailValue);
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
       fieldOp_->setDictionaryValue(decoder, field);
     }
@@ -327,7 +341,8 @@ FieldInstructionBlob::decodeTail(
     if(bool(previousField) && previousField->isDefined())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,//identity_,
         previousField);
     }
     else
@@ -374,7 +389,7 @@ FieldInstructionBlob::encodeNop(
 {
     // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toString();
     if(!isMandatory())
@@ -405,7 +420,7 @@ FieldInstructionBlob::encodeConstant(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     const std::string & value = field->toString();
     const std::string & constant = initialValue_->toString();
@@ -439,7 +454,7 @@ FieldInstructionBlob::encodeDefault(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toString();
     const std::string & defaultValue = initialValue_->toString();
@@ -509,7 +524,7 @@ FieldInstructionBlob::encodeCopy(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toString();
     if(previousIsKnown && previousValue == value)
@@ -584,7 +599,7 @@ FieldInstructionBlob::encodeDelta(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toString();
     size_t prefix = longestMatchingPrefix(previousValue, value);
@@ -651,7 +666,7 @@ FieldInstructionBlob::encodeTail(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toString();
     size_t prefix = longestMatchingPrefix(previousValue, value);

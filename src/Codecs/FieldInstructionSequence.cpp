@@ -25,9 +25,11 @@ FieldInstructionSequence::FieldInstructionSequence(
 {
 }
 
+#if 0
 FieldInstructionSequence::FieldInstructionSequence()
 {
 }
+#endif
 
 FieldInstructionSequence::~FieldInstructionSequence()
 {
@@ -49,7 +51,7 @@ FieldInstructionSequence::decodeNop(
   Messages::FieldSet lengthSet(1);
   if(segment_->getLengthInstruction(lengthInstruction))
   {
-    source.beginField(lengthInstruction->getIdentity()->name());
+    source.beginField(lengthInstruction->getIdentity().name());
     if(!lengthInstruction->decode(source, pmap, decoder, lengthSet))
     {
       return false;
@@ -57,7 +59,7 @@ FieldInstructionSequence::decodeNop(
   }
   else
   {
-    FieldInstructionUInt32 defaultLengthInstruction;
+    FieldInstructionUInt32 defaultLengthInstruction(fieldRegistry_,"length","", "", "");
     defaultLengthInstruction.setPresence(isMandatory());
     if(!defaultLengthInstruction.decode(source, pmap, decoder, lengthSet))
     {
@@ -90,7 +92,8 @@ FieldInstructionSequence::decodeNop(
   }
   Messages::FieldCPtr field(Messages::FieldSequence::create(sequence));
   fieldSet.addField(
-    identity_,
+    fieldRegistry_,
+    fieldIndex_,
     field);
   return true;
 }
@@ -109,7 +112,7 @@ FieldInstructionSequence::encodeNop(
 
   // retrieve the field corresponding to this sequence
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Messages::SequenceCPtr sequence = field->toSequence();
     size_t length = sequence->size();
@@ -121,14 +124,18 @@ FieldInstructionSequence::encodeNop(
     Codecs::FieldInstructionCPtr lengthInstruction;
     if(segment_->getLengthInstruction(lengthInstruction))
     {
-      lengthSet.addField(lengthInstruction->getIdentity(), lengthField);
+      lengthSet.addField(
+        fieldRegistry_,
+        lengthInstruction->getFieldIndex(),
+        lengthField);
       lengthInstruction->encode(destination, pmap, encoder, lengthSet);
     }
     else
     {
-       FieldInstructionUInt32 lengthInstruction;
-       lengthInstruction.setPresence(isMandatory());
-       lengthInstruction.encode(destination, pmap, encoder, lengthSet);
+      Messages::FieldRegistry registry;
+      FieldInstructionUInt32 lengthInstruction(registry, "length","","","");
+      lengthInstruction.setPresence(isMandatory());
+      lengthInstruction.encode(destination, pmap, encoder, lengthSet);
     }
 
     for(size_t pos = 0; pos < length; ++pos)

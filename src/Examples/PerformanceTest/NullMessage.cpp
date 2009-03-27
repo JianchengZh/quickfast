@@ -45,8 +45,25 @@ NullMessage::addField(const Messages::FieldIdentityCPtr & identity, const Messag
   ++ size_;
 }
 
+void
+NullMessage::addField(
+  const Messages::FieldRegistry & registry,
+  Messages::FieldRegistry::Index index,
+  const Messages::FieldCPtr & value)
+{
+  ++ size_;
+}
+
 bool
 NullMessage::getIdentity(const std::string &name, Messages::FieldIdentityCPtr & identity) const
+{
+  return false;
+}
+
+bool
+NullMessage::getIdentity(
+  const std::string &name,
+  const Messages::FieldIdentity *& identity) const
 {
   return false;
 }

@@ -19,10 +19,12 @@ FieldInstructionUtf8::FieldInstructionUtf8(
   initialValue_ = Messages::FieldUtf8::createNull();
 }
 
+#if 0
 FieldInstructionUtf8::FieldInstructionUtf8()
 {
   initialValue_ = Messages::FieldUtf8::createNull();
 }
+#endif
 
 FieldInstructionUtf8::~FieldInstructionUtf8()
 {

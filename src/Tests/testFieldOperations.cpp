@@ -208,7 +208,10 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_1_1)
   // check the error condition: constant value doesn't match
   Messages::FieldSet fieldSet2(10);
   Messages::FieldCPtr dataField = Messages::FieldUInt32::create(99);
-  fieldSet2.addField(field.getIdentity(), dataField);
+  fieldSet2.addField(
+    fieldRegistry,
+    field.getFieldIndex(),
+    dataField);
   BOOST_CHECK_THROW(field.encode(destination, pmapResult, encoder, fieldSet2), EncodingError);
   // check the error condition: missing mandatory field
   Messages::FieldSet fieldSet3(10);

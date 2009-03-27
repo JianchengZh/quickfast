@@ -41,14 +41,15 @@ namespace QuickFAST{
       /// The FieldCPtr is copied, not the actual Field object.
       /// @param identity identifies this field
       /// @param value is the value to be assigned.
-      virtual void addField(const FieldIdentityCPtr & identity, const FieldCPtr & value) = 0;
-
+//      virtual void addField(const FieldIdentityCPtr & identity, const FieldCPtr & value) = 0;
+      virtual void addField(const FieldRegistry & registry, FieldRegistry::Index index, const FieldCPtr & value) = 0;
 
       /// @brief Get the identity information for the specified field
       /// @param[in] name identifies the desired field
       /// @param[out] identity is the information for the field that was found
       /// @returns true if the field was found
-      virtual bool getIdentity(const std::string &name, FieldIdentityCPtr & identity) const = 0;;
+//      virtual bool getIdentity(const std::string &name, FieldIdentityCPtr & identity) const = 0;;
+      virtual bool getIdentity(const std::string &name, const FieldIdentity *& identity) const = 0;
 
       /// @brief identify the application type associated with
       /// this set of fields via typeref.

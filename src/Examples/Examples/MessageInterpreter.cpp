@@ -79,7 +79,7 @@ MessageInterpreter::formatMessage(const Messages::Message & message)
     it != message.end();
     ++it)
   {
-    const Messages::FieldIdentityCPtr & identity = it->getIdentity();
+    const Messages::FieldIdentity & identity = it->getIdentity();
     const Messages::FieldCPtr & field = it->getField();
     Messages::Field::FieldType type = field->getType();
     if(type == Messages::Field::SEQUENCE)
@@ -92,7 +92,7 @@ MessageInterpreter::formatMessage(const Messages::Message & message)
     }
     else
     {
-      out_ << ' ' << identity->name() << '[' << identity->id() << "]=";
+      out_ << ' ' << identity.name() << '[' << identity.id() << "]=";
       displayFieldValue(field);
     }
   }
@@ -105,13 +105,13 @@ MessageInterpreter::newline()
 
 void
 MessageInterpreter::formatSequence(
-  const Messages::FieldIdentityCPtr & identity,
+  const Messages::FieldIdentity & identity,
   const Messages::FieldCPtr & field)
 {
   Messages::SequenceCPtr sequence = field->toSequence();
   size_t count = sequence->size();
   newline();
-  out_ << ' ' << identity->name() << '[' << identity->id() << "]=";
+  out_ << ' ' << identity.name() << '[' << identity.id() << "]=";
 
   out_ << "Sequence[" << count << ']';
   size_t entryCount = 0;
@@ -129,7 +129,7 @@ MessageInterpreter::formatSequence(
       ++fsit)
     {
       // todo: refactor with message decoding
-      const Messages::FieldIdentityCPtr & identity = fsit->getIdentity();
+      const Messages::FieldIdentity & identity = fsit->getIdentity();
       const Messages::FieldCPtr & field = fsit->getField();
       Messages::Field::FieldType type = field->getType();
       if(type == Messages::Field::SEQUENCE)
@@ -142,7 +142,7 @@ MessageInterpreter::formatSequence(
       }
       else
       {
-        out_ << ' ' << identity->name() << '[' << identity->id() << "]=";
+        out_ << ' ' << identity.name() << '[' << identity.id() << "]=";
         displayFieldValue(field);
       }
     }

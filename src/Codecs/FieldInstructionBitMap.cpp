@@ -26,10 +26,12 @@ FieldInstructionBitMap::FieldInstructionBitMap(
   initialValue_ = Messages::FieldBitMap::createNull();
 }
 
+#if 0
 FieldInstructionBitMap::FieldInstructionBitMap()
 {
   initialValue_ = Messages::FieldBitMap::createNull();
 }
+#endif
 
 FieldInstructionBitMap::~FieldInstructionBitMap()
 {
@@ -63,7 +65,10 @@ FieldInstructionBitMap::decodeNop(
   }
   if(field)
   {
-    fieldSet.addField(identity_, field);
+    fieldSet.addField(
+      fieldRegistry_,
+      fieldIndex_,
+      field);
   }
   return true;
 }
@@ -79,7 +84,7 @@ FieldInstructionBitMap::encodeNop(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     BitMap value = field->toBitMap();
 #if 0

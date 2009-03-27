@@ -20,9 +20,11 @@ FieldInstructionFiller::FieldInstructionFiller(
 {
 }
 
+#if 0
 FieldInstructionFiller::FieldInstructionFiller()
 {
 }
+#endif
 
 FieldInstructionFiller::~FieldInstructionFiller()
 {

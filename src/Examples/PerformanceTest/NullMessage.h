@@ -7,6 +7,7 @@
 #ifndef NULLMESSAGE_H
 #define NULLMESSAGE_H
 #include <Messages/DecodedFields.h>
+#include <Messages/FieldRegistry.h>
 #include <Common/Types.h>
 namespace QuickFAST{
   namespace Examples{
@@ -26,7 +27,15 @@ namespace QuickFAST{
       virtual void reserve(size_t capacity);
       virtual size_t size()const;
       virtual void addField(const Messages::FieldIdentityCPtr & identity, const Messages::FieldCPtr & value);
+      virtual void addField(
+        const Messages::FieldRegistry & registry,
+        Messages::FieldRegistry::Index index,
+        const Messages::FieldCPtr & value);
+
       virtual bool getIdentity(const std::string &name, Messages::FieldIdentityCPtr & identity) const;
+      virtual bool getIdentity(
+        const std::string &name,
+        const Messages::FieldIdentity *& identity) const;
       virtual void setApplicationType(const std::string & type, const std::string & ns);
       virtual const std::string & getApplicationType()const;
       virtual const std::string & getApplicationTypeNs()const;

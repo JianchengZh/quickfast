@@ -26,10 +26,12 @@ FieldInstructionAscii::FieldInstructionAscii(
   initialValue_ = Messages::FieldAscii::createNull();
 }
 
+#if 0
 FieldInstructionAscii::FieldInstructionAscii()
 {
   initialValue_ = Messages::FieldAscii::createNull();
 }
+#endif
 
 FieldInstructionAscii::~FieldInstructionAscii()
 {
@@ -81,7 +83,10 @@ FieldInstructionAscii::decodeNop(
   }
   if(field)
   {
-    fieldSet.addField(identity_, field);
+    fieldSet.addField(
+      fieldRegistry_,
+      fieldIndex_,
+      field);
   }
   return true;
 }
@@ -97,7 +102,8 @@ FieldInstructionAscii::decodeConstant(
   if(isMandatory())
   {
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       initialValue_);
   }
   else
@@ -105,7 +111,8 @@ FieldInstructionAscii::decodeConstant(
     if(pmap.checkNextField())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         initialValue_);
     }
     else
@@ -134,7 +141,8 @@ FieldInstructionAscii::decodeDefault(
     if(field)
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
     }
     return true;
@@ -144,7 +152,8 @@ FieldInstructionAscii::decodeDefault(
     if(fieldOp_->hasValue())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         initialValue_);
     }
     else if(isMandatory())
@@ -175,7 +184,8 @@ FieldInstructionAscii::decodeCopy(
     if(field)
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
       fieldOp_->setDictionaryValue(decoder, field);
     }
@@ -191,14 +201,15 @@ FieldInstructionAscii::decodeCopy(
     if(bool(previousField) && previousField->isDefined())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         previousField);
     }
     else
     {
       if(isMandatory())
       {
-        decoder.reportFatal("[ERR D6]", "No value available for mandatory copy field.");
+        decoder.reportFatal("[ERR D6]", "No value available for mandatory copy field." + fieldRegistry_.get(fieldIndex_).name());
       }
     }
   }
@@ -251,13 +262,14 @@ FieldInstructionAscii::decodeDelta(
     // don't chop more than is there
     if(static_cast<uint32>(deltaLength) > previousLength)
     {
-      decoder.reportWarning("[ERR D7]", "String head delta length exceeds length of previous string.", *identity_);
+      decoder.reportWarning("[ERR D7]", "String head delta length exceeds length of previous string: ", fieldRegistry_.get(fieldIndex_));
       deltaLength = previousLength;
     }
     Messages::FieldCPtr field = Messages::FieldAscii::create(
       deltaValue + previousValue.substr(deltaLength));
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       field);
     fieldOp_->setDictionaryValue(decoder, field);
   }
@@ -269,13 +281,14 @@ FieldInstructionAscii::decodeDelta(
 #if 0 // handy when debugging
       std::cout << "decode ascii delta length: " << deltaLength << " previous: " << previousLength << std::endl;
 #endif
-      decoder.reportError("[ERR D7]", "String tail delta length exceeds length of previous string.", *identity_);
+      decoder.reportError("[ERR D7]", "String tail delta length exceeds length of previous string: ", fieldRegistry_.get(fieldIndex_));
       deltaLength = previousLength;
     }
     Messages::FieldCPtr field = Messages::FieldAscii::create(
       previousValue.substr(0, previousLength - deltaLength) + deltaValue);
     fieldSet.addField(
-      identity_,
+      fieldRegistry_,
+      fieldIndex_,
       field);
     fieldOp_->setDictionaryValue(decoder, field);
   }
@@ -323,7 +336,8 @@ FieldInstructionAscii::decodeTail(
       Messages::FieldCPtr field(Messages::FieldAscii::create(
         previousValue.substr(0, previousLength - tailLength) + tailValue));
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
       fieldOp_->setDictionaryValue(decoder, field);
     }
@@ -343,14 +357,15 @@ FieldInstructionAscii::decodeTail(
     if(bool(previousField) && previousField->isDefined())
     {
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         previousField);
     }
     else
     {
       if(isMandatory())
       {
-        decoder.reportFatal("[ERR D6]", "No value available for mandatory copy field.");
+        decoder.reportFatal("[ERR D6]", "No value available for mandatory copy field: " + fieldRegistry_.get(fieldIndex_).name());
       }
     }
   }
@@ -366,7 +381,7 @@ FieldInstructionAscii::encodeNop(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toAscii();
     if(!isMandatory())
@@ -382,7 +397,7 @@ FieldInstructionAscii::encodeNop(
   {
     if(isMandatory())
     {
-      encoder.reportFatal("[ERR U9]", "Missing mandatory field.");
+      encoder.reportFatal("[ERR U9]", "Missing mandatory field: " + fieldRegistry_.get(fieldIndex_).name());
     }
     destination.putByte(nullAscii);
   }
@@ -397,13 +412,13 @@ FieldInstructionAscii::encodeConstant(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     const std::string & value = field->toAscii();
     const std::string & constant = initialValue_->toAscii();
     if(value != constant)
     {
-      encoder.reportFatal("[ERR U10}", "Constant value does not match application data.");
+      encoder.reportFatal("[ERR U10}", "Constant value does not match application data: " + fieldRegistry_.get(fieldIndex_).name());
     }
 
     if(!isMandatory())
@@ -415,7 +430,7 @@ FieldInstructionAscii::encodeConstant(
   {
     if(isMandatory())
     {
-      encoder.reportFatal("[ERR U9]", "Missing mandatory field.");
+      encoder.reportFatal("[ERR U9]", "Missing mandatory field: " + fieldRegistry_.get(fieldIndex_).name());
     }
     pmap.setNextField(false);
   }
@@ -431,7 +446,7 @@ FieldInstructionAscii::encodeDefault(
 {
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toAscii();
     const std::string & defaultValue = initialValue_->toAscii();
@@ -456,7 +471,7 @@ FieldInstructionAscii::encodeDefault(
   {
     if(isMandatory())
     {
-      encoder.reportFatal("[ERR U9]", "Missing mandatory field.");
+      encoder.reportFatal("[ERR U9]", "Missing mandatory field: " + fieldRegistry_.get(fieldIndex_).name());
     }
     if(fieldOp_->hasValue())
     {
@@ -489,7 +504,7 @@ FieldInstructionAscii::encodeCopy(
   {
     if(!previousField->isType(Messages::Field::ASCII))
     {
-      encoder.reportFatal("[ERR D4]", "Previous value type mismatch.");
+      encoder.reportFatal("[ERR D4]", "Previous value type mismatch: " + fieldRegistry_.get(fieldIndex_).name());
     }
     previousIsKnown = true;
     previousNotNull = previousField->isDefined();
@@ -501,7 +516,7 @@ FieldInstructionAscii::encodeCopy(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toAscii();
     if(previousIsKnown && previousValue == value)
@@ -526,7 +541,7 @@ FieldInstructionAscii::encodeCopy(
   {
     if(isMandatory())
     {
-      encoder.reportFatal("[ERR U9]", "Missing mandatory field.");
+      encoder.reportFatal("[ERR U9]", "Missing mandatory field: " + fieldRegistry_.get(fieldIndex_).name());
     }
     if((previousIsKnown && previousNotNull)
       || !previousIsKnown)
@@ -560,7 +575,7 @@ FieldInstructionAscii::encodeDelta(
   {
     if(!previousField->isType(Messages::Field::ASCII))
     {
-      encoder.reportFatal("[ERR D4]", "Previous value type mismatch.");
+      encoder.reportFatal("[ERR D4]", "Previous value type mismatch: " + fieldRegistry_.get(fieldIndex_).name());
     }
     previousIsKnown = true;
     previousNotNull = previousField->isDefined();
@@ -572,7 +587,7 @@ FieldInstructionAscii::encodeDelta(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toAscii();
     size_t prefix = longestMatchingPrefix(previousValue, value);
@@ -609,7 +624,7 @@ FieldInstructionAscii::encodeDelta(
   {
     if(isMandatory())
     {
-      encoder.reportFatal("[ERR U9]", "Missing mandatory field.");
+      encoder.reportFatal("[ERR U9]", "Missing mandatory field: " + fieldRegistry_.get(fieldIndex_).name());
     }
     destination.putByte(nullAscii);
   }
@@ -633,7 +648,7 @@ FieldInstructionAscii::encodeTail(
   {
     if(!previousField->isType(Messages::Field::ASCII))
     {
-      encoder.reportFatal("[ERR D4]", "Previous value type mismatch.");
+      encoder.reportFatal("[ERR D4]", "Previous value type mismatch: " + fieldRegistry_.get(fieldIndex_).name());
     }
     previousIsKnown = true;
     previousNotNull = previousField->isDefined();
@@ -645,7 +660,7 @@ FieldInstructionAscii::encodeTail(
 
   // get the value from the application data
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     std::string value = field->toAscii();
     size_t prefix = longestMatchingPrefix(previousValue, value);
@@ -676,7 +691,7 @@ FieldInstructionAscii::encodeTail(
   {
     if(isMandatory())
     {
-      encoder.reportFatal("[ERR U9]", "Missing mandatory field.");
+      encoder.reportFatal("[ERR U9]", "Missing mandatory field: " + fieldRegistry_.get(fieldIndex_).name());
     }
     destination.putByte(nullAscii);
   }

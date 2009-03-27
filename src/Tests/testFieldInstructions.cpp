@@ -59,10 +59,10 @@ namespace
     instruction.setId("id");
     BOOST_CHECK_EQUAL(instruction.getId(), "id");
 
-    Messages::FieldIdentityCPtr identity = instruction.getIdentity();
+    const Messages::FieldIdentity & identity = instruction.getIdentity();
     BOOST_CHECK(!instruction.isMandatory());
-    BOOST_CHECK_EQUAL(identity->id(),"id");
-    BOOST_CHECK_EQUAL(identity->name(), "//NS/Name");
+    BOOST_CHECK_EQUAL(identity.id(),"id");
+    BOOST_CHECK_EQUAL(identity.name(), "//NS/Name");
 
     BOOST_CHECK_EQUAL(instruction.presenceMapBitsRequired(), 0);
 

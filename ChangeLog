@@ -1,3 +1,39 @@
+Fri Mar 27 19:53:49 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
+
+
+        * src/Codecs/Decoder.cpp:
+        * src/Codecs/Encoder.cpp:
+        * src/Codecs/FieldInstruction.h:
+        * src/Codecs/FieldInstruction.cpp:
+        * src/Codecs/FieldInstructionAscii.cpp:
+        * src/Codecs/FieldInstructionBitMap.cpp:
+        * src/Codecs/FieldInstructionBlob.cpp:
+        * src/Codecs/FieldInstructionByteVector.cpp:
+        * src/Codecs/FieldInstructionDecimal.cpp:
+        * src/Codecs/FieldInstructionFiller.cpp:
+        * src/Codecs/FieldInstructionGroup.cpp:
+        * src/Codecs/FieldInstructionInteger.h:
+        * src/Codecs/FieldInstructionSequence.cpp:
+        * src/Codecs/FieldInstructionTemplateRef.cpp:
+        * src/Codecs/FieldInstructionUtf8.cpp:
+        * src/Codecs/SegmentBody.cpp:
+        * src/Codecs/XMLTemplateParser.cpp:
+        * src/Common/Profiler.h:
+        * src/Examples/Examples/MessageInterpreter.h:
+        * src/Examples/Examples/MessageInterpreter.cpp:
+        * src/Examples/PerformanceTest/NullMessage.h:
+        * src/Examples/PerformanceTest/NullMessage.cpp:
+        * src/Messages/DecodedFields.h:
+        * src/Messages/FieldRegistry.cpp:
+        * src/Messages/FieldSet.h:
+        * src/Messages/FieldSet.cpp:
+        * src/Messages/MessageField.h:
+        * src/Tests/testFieldInstructions.cpp:
+        * src/Tests/testFieldOperations.cpp:
+        * src/Tests/testRoundTrip.cpp:
+        * src/Tests/testXMLTemplateParser.cpp:
+        Another cleanpoint.  Passes unit tests, but no speedup yet.
+
 Thu Mar 26 21:15:29 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
 
         * src/Codecs/Decoder.h:

@@ -41,7 +41,7 @@ namespace QuickFAST{
         const std::string & typeNamespace);
 
       /// @brief construct anonomous field instruction
-      FieldInstructionInteger();
+//      FieldInstructionInteger();
 
       /// @brief a typical virtual destructor.
       virtual ~FieldInstructionInteger();
@@ -155,7 +155,7 @@ namespace QuickFAST{
       , initialField_(FIELD_CLASS::create(0))
     {
     }
-
+/*
     template<typename INTEGER_TYPE, typename FIELD_CLASS, bool SIGNED>
     FieldInstructionInteger<INTEGER_TYPE, FIELD_CLASS, SIGNED>::
     FieldInstructionInteger()
@@ -163,6 +163,7 @@ namespace QuickFAST{
       , initialField_(FIELD_CLASS::create(0))
     {
     }
+*/
 
     template<typename INTEGER_TYPE, typename FIELD_CLASS, bool SIGNED>
     FieldInstructionInteger<INTEGER_TYPE, FIELD_CLASS, SIGNED>::
@@ -213,7 +214,8 @@ namespace QuickFAST{
         Messages::FieldCPtr newField(FIELD_CLASS::create(value));
 
         fieldSet.addField(
-          identity_,
+          fieldRegistry_,
+          fieldIndex_,
           newField);
       }
       else
@@ -223,7 +225,8 @@ namespace QuickFAST{
         {
           Messages::FieldCPtr newField(FIELD_CLASS::create(value));
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             newField);
         }
       }
@@ -247,7 +250,8 @@ namespace QuickFAST{
       else
       {
         fieldSet.addField(
-          identity_,
+          fieldRegistry_,
+          fieldIndex_,
           initialField_);
       }
       return true;
@@ -280,7 +284,8 @@ namespace QuickFAST{
         {
           Messages::FieldCPtr newField(FIELD_CLASS::create(value));
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             newField);
           fieldOp_->setDictionaryValue(decoder, newField);
         }
@@ -296,7 +301,8 @@ namespace QuickFAST{
           {
             Messages::FieldCPtr newField(FIELD_CLASS::create(value));
             fieldSet.addField(
-              identity_,
+              fieldRegistry_,
+              fieldIndex_,
               newField);
             fieldOp_->setDictionaryValue(decoder, newField);
           }
@@ -313,12 +319,13 @@ namespace QuickFAST{
             if(!previousField->isType(typedValue_))
             {
               // this will probably throw a template definition error
-              decoder.reportError("[ERR D4]", "Previous value type mismatch.", *identity_);
+              decoder.reportError("[ERR D4]", "Previous value type mismatch.", fieldRegistry_.get(fieldIndex_));
               // but in case it doesn't ...
               previousField = FIELD_CLASS::create(0);
             }
             fieldSet.addField(
-              identity_,
+              fieldRegistry_,
+              fieldIndex_,
               previousField);
           }
           else // field present but not defined
@@ -326,11 +333,12 @@ namespace QuickFAST{
             if(isMandatory())
             {
               // this will probably throw a template definition error
-              decoder.reportError("[ERR D6]", "Mandatory field is missing.", *identity_);
+              decoder.reportError("[ERR D6]", "Mandatory field is missing.", fieldRegistry_.get(fieldIndex_));
               // but in case it doesn't ...
               previousField = FIELD_CLASS::create(0);
               fieldSet.addField(
-                identity_,
+                fieldRegistry_,
+                fieldIndex_,
                 previousField);
             }
           }
@@ -342,7 +350,8 @@ namespace QuickFAST{
           if(fieldOp_->hasValue())
           {
             fieldSet.addField(
-              identity_,
+              fieldRegistry_,
+              fieldIndex_,
               initialField_);
             fieldOp_->setDictionaryValue(decoder, initialField_);
           }
@@ -352,11 +361,11 @@ namespace QuickFAST{
             {
               decoder.reportError(
                 "[ERR D5]",
-                "Copy operator missing mandatory integer field/no initial value",
-                *identity_);
+                "Copy operator missing mandatory integer field/no initial value", fieldRegistry_.get(fieldIndex_));
               Messages::FieldCPtr newField(FIELD_CLASS::create(0));
               fieldSet.addField(
-                identity_,
+                fieldRegistry_,
+                fieldIndex_,
                 newField);
               fieldOp_->setDictionaryValue(decoder, newField);
             }
@@ -385,7 +394,8 @@ namespace QuickFAST{
         {
           Messages::FieldCPtr newField(FIELD_CLASS::create(value));
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             newField);
         }
         else
@@ -395,7 +405,8 @@ namespace QuickFAST{
             PROFILE_POINT("int::decodeDefault:,addexplicit");
             Messages::FieldCPtr newField(FIELD_CLASS::create(value));
             fieldSet.addField(
-              identity_,
+              fieldRegistry_,
+              fieldIndex_,
               newField);
           }
         }
@@ -407,12 +418,13 @@ namespace QuickFAST{
         {
           PROFILE_POINT("int::decodeDefault:adddefault");
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             initialField_);
         }
         else if(isMandatory())
         {
-          decoder.reportError("[ERR D5]", "Mandatory default operator with no value.", *identity_);
+          decoder.reportError("[ERR D5]", "Mandatory default operator with no value.", fieldRegistry_.get(fieldIndex_));
         }
       }
       return true;
@@ -456,7 +468,7 @@ namespace QuickFAST{
         PROFILE_POINT("int::decDelta::fromDictionary");
         if(!previousField->isType(value))
         {
-          decoder.reportError("[ERR D4]", " Previous value type mismatch.", *identity_);
+          decoder.reportError("[ERR D4]", " Previous value type mismatch.", fieldRegistry_.get(fieldIndex_));
           previousField = FIELD_CLASS::create(0);
         }
         previousField->getValue(value);
@@ -466,7 +478,8 @@ namespace QuickFAST{
 
       {PROFILE_POINT("int::decDelta::add2Msg");
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         newField);
       } //PROFILE
       {PROFILE_POINT("int::decDelta::add2Dic");
@@ -501,7 +514,8 @@ namespace QuickFAST{
         {
           Messages::FieldCPtr newField(FIELD_CLASS::create(value));
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             newField);
           fieldOp_->setDictionaryValue(decoder, newField);
         }
@@ -513,7 +527,8 @@ namespace QuickFAST{
           {
             Messages::FieldCPtr newField(FIELD_CLASS::create(value));
             fieldSet.addField(
-              identity_,
+              fieldRegistry_,
+              fieldIndex_,
               newField);
           fieldOp_->setDictionaryValue(decoder, newField);
           }
@@ -528,7 +543,7 @@ namespace QuickFAST{
         {
           if(!previousField->isType(value))
           {
-            decoder.reportError("[ERR D4]", "Previous value type mismatch.", *identity_);
+            decoder.reportError("[ERR D4]", "Previous value type mismatch.", fieldRegistry_.get(fieldIndex_));
             previousField = FIELD_CLASS::create(0);
           }
           previousField->getValue(value);
@@ -544,7 +559,7 @@ namespace QuickFAST{
           {
             if(isMandatory())
             {
-              decoder.reportError("[ERRD5]", "Missing initial value for Increment operator", *identity_);
+              decoder.reportError("[ERRD5]", "Missing initial value for Increment operator", fieldRegistry_.get(fieldIndex_));
               value = 0;
             }
             else
@@ -556,7 +571,8 @@ namespace QuickFAST{
         }
         Messages::FieldCPtr newField(FIELD_CLASS::create(value));
         fieldSet.addField(
-          identity_,
+          fieldRegistry_,
+          fieldIndex_,
           newField);
           fieldOp_->setDictionaryValue(decoder, newField);
       }
@@ -574,7 +590,7 @@ namespace QuickFAST{
     {
       // get the value from the application data
       Messages::FieldCPtr field;
-      if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
       {
         INTEGER_TYPE value;
         field->getValue(value);
@@ -599,7 +615,7 @@ namespace QuickFAST{
       {
         if(isMandatory())
         {
-          encoder.reportError("[ERR x0]", "Missing mandatory field.", *identity_);
+          encoder.reportError("[ERR x0]", "Missing mandatory field.", fieldRegistry_.get(fieldIndex_));
           if(SIGNED)
           {
             encodeSignedInteger(destination, encoder.getWorkingBuffer(), 0);
@@ -627,13 +643,13 @@ namespace QuickFAST{
     {
       // get the value from the application data
       Messages::FieldCPtr field;
-      if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
       {
         INTEGER_TYPE value;
         field->getValue(value);
         if(value != typedValue_)
         {
-          encoder.reportError("[ERR ?]", "Constant value does not match application data.", *identity_);
+          encoder.reportError("[ERR ?]", "Constant value does not match application data.", fieldRegistry_.get(fieldIndex_));
         }
 
         if(!isMandatory())
@@ -645,7 +661,7 @@ namespace QuickFAST{
       {
         if(isMandatory())
         {
-          encoder.reportError("[ERR ?]", "Missing mandatory field.", *identity_);
+          encoder.reportError("[ERR ?]", "Missing mandatory field.", fieldRegistry_.get(fieldIndex_));
         }
         pmap.setNextField(false);
       }
@@ -662,7 +678,7 @@ namespace QuickFAST{
     {
       // get the value from the application data
       Messages::FieldCPtr field;
-      if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
       {
         INTEGER_TYPE value;
         field->getValue(value);
@@ -695,7 +711,7 @@ namespace QuickFAST{
       {
         if(isMandatory())
         {
-          encoder.reportError("[ERR ??]", "Missing mandatory field.", *identity_);
+          encoder.reportError("[ERR U9]", "Missing mandatory field.", fieldRegistry_.get(fieldIndex_));
         }
         if(fieldOp_->hasValue())
         {
@@ -729,7 +745,7 @@ namespace QuickFAST{
       {
         if(!previousField->isType(typedValue_))
         {
-          encoder.reportError("[ERR D4]", "Previous value type mismatch.", *identity_);
+          encoder.reportError("[ERR D4]", "Previous value type mismatch.", fieldRegistry_.get(fieldIndex_));
         }
         previousIsKnown = true;
         previousNotNull = previousField->isDefined();
@@ -741,7 +757,7 @@ namespace QuickFAST{
 
       // get the value from the application data
       Messages::FieldCPtr field;
-      if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
       {
         INTEGER_TYPE value;
         field->getValue(value);
@@ -777,7 +793,7 @@ namespace QuickFAST{
       {
         if(isMandatory())
         {
-          encoder.reportError("[ERR ??]", "Missing mandatory field.", *identity_);
+          encoder.reportError("[ERR U9]", "Missing mandatory field.", fieldRegistry_.get(fieldIndex_));
           if(SIGNED)
           {
             encodeSignedInteger(destination, encoder.getWorkingBuffer(), 0);
@@ -825,7 +841,7 @@ namespace QuickFAST{
       {
         if(!previousField->isType(typedValue_))
         {
-          encoder.reportError("[ERR D4]", "Previous value type mismatch.", *identity_);
+          encoder.reportError("[ERR D4]", "Previous value type mismatch.", fieldRegistry_.get(fieldIndex_));
         }
         else
         {
@@ -840,7 +856,7 @@ namespace QuickFAST{
 
       // get the value from the application data
       Messages::FieldCPtr field;
-      if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
       {
         INTEGER_TYPE value;
         field->getValue(value);
@@ -864,7 +880,7 @@ namespace QuickFAST{
       {
         if(isMandatory())
         {
-          encoder.reportError("[ERR ??]", "Missing mandatory field.", *identity_);
+          encoder.reportError("[ERR U9]", "Missing mandatory field.", fieldRegistry_.get(fieldIndex_));
           encodeSignedInteger(destination, encoder.getWorkingBuffer(), 0);
         }
         else
@@ -894,7 +910,7 @@ namespace QuickFAST{
       {
         if(!previousField->isType(typedValue_))
         {
-          encoder.reportError("[ERR D4]", "Previous value type mismatch.", *identity_);
+          encoder.reportError("[ERR D4]", "Previous value type mismatch.", fieldRegistry_.get(fieldIndex_));
         }
         else
         {
@@ -909,7 +925,7 @@ namespace QuickFAST{
 
       // get the value from the application data
       Messages::FieldCPtr field;
-      if(fieldSet.getField(identity_->name(), field))
+      if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
       {
         INTEGER_TYPE value;
         field->getValue(value);
@@ -944,7 +960,7 @@ namespace QuickFAST{
       {
         if(isMandatory())
         {
-          encoder.reportError("[ERR ??]", "Missing mandatory field.", *identity_);
+          encoder.reportError("[ERR U9]", "Missing mandatory field.", fieldRegistry_.get(fieldIndex_));
           if(SIGNED)
           {
             encodeSignedInteger(destination, encoder.getWorkingBuffer(), 0);

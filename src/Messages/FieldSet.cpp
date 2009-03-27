@@ -87,7 +87,7 @@ FieldSet::isPresent(const std::string & name) const
 }
 
 void
-FieldSet::addField(const FieldIdentityCPtr & identity, const FieldCPtr & value)
+FieldSet::addField(const FieldRegistry & registry, FieldRegistry::Index index, const FieldCPtr & value)
 {
   PROFILE_POINT("FieldSet::addField");
   if(used_ >= capacity_)
@@ -96,7 +96,7 @@ FieldSet::addField(const FieldIdentityCPtr & identity, const FieldCPtr & value)
     // todo complain.  This should not happen
     reserve((used_ * 3) / 2);
   }
-  new (fields_ + used_) MessageField(identity, value);
+  new (fields_ + used_) MessageField(registry, index, value);
   ++used_;
 }
 
@@ -106,7 +106,8 @@ FieldSet::getField(const std::string &name, FieldCPtr & value) const
   PROFILE_POINT("FieldSet::getField");
   for(size_t index = 0; index < used_; ++index)
   {
-    if(name == fields_[index].name())
+    const std::string & fieldName = fields_[index].name();
+    if(name == fieldName)
     {
       value = fields_[index].getField();
       return value->isDefined();
@@ -116,13 +117,25 @@ FieldSet::getField(const std::string &name, FieldCPtr & value) const
 }
 
 bool
-FieldSet::getIdentity(const std::string &name, FieldIdentityCPtr & identity) const
+FieldSet::getField(
+  const FieldRegistry & registry,
+  FieldRegistry::Index index,
+  FieldCPtr & value) const
+{
+  int todo;
+  const std::string & name = registry.get(index).name();
+  return getField(name, value);
+}
+
+
+bool
+FieldSet::getIdentity(const std::string &name, const FieldIdentity *& identity) const
 {
   for(size_t index = 0; index < used_; ++index)
   {
     if(name == fields_[index].name())
     {
-      identity = fields_[index].getIdentity();
+      identity = & fields_[index].getIdentity();
       return true;
     }
   }

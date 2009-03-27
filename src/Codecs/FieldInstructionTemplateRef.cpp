@@ -23,9 +23,11 @@ FieldInstructionTemplateRef::FieldInstructionTemplateRef(
 {
 }
 
+#if 0
 FieldInstructionTemplateRef::FieldInstructionTemplateRef()
 {
 }
+#endif
 
 FieldInstructionTemplateRef::~FieldInstructionTemplateRef()
 {
@@ -73,7 +75,8 @@ FieldInstructionTemplateRef::decodeNop(
             target,
             *group);
           fieldSet.addField(
-            identity_,
+            fieldRegistry_,
+            fieldIndex_,
             Messages::FieldGroup::create(group));
         }
         else
@@ -121,7 +124,7 @@ FieldInstructionTemplateRef::encodeNop(
     // retrieve the field corresponding to this templateRef
     // which if it exists should be a FieldGroup
     Messages::FieldCPtr field;
-    if(fieldSet.getField(identity_->name(), field))
+    if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
     {
       Messages::GroupCPtr group = field->toGroup();
       encoder.encodeGroup(

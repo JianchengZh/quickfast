@@ -19,10 +19,12 @@ FieldInstructionByteVector::FieldInstructionByteVector(
   initialValue_ = Messages::FieldByteVector::createNull();
 }
 
+#if 0
 FieldInstructionByteVector::FieldInstructionByteVector()
 {
   initialValue_ = Messages::FieldByteVector::createNull();
 }
+#endif
 
 FieldInstructionByteVector::~FieldInstructionByteVector()
 {

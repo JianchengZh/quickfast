@@ -98,7 +98,8 @@ SegmentBody::instructionIndex(const std::string & name)const
   // or faster than a map, and since field order is critical we keep fields in a vector.
   for (size_t pos = 0; pos < instructions_.size(); ++pos)
   {
-    if(instructions_[pos]->getName() == name)
+    const std::string & instructionName = instructions_[pos]->getName();
+    if(instructionName == name)
     {
       return pos;
     }

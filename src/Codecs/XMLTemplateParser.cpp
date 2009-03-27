@@ -701,7 +701,15 @@ TemplateBuilder::parseDecimal(const std::string & tag, const AttributeMap& attri
 void
 TemplateBuilder::parseExponent(const std::string & tag, const AttributeMap& attributes)
 {
-  FieldInstructionExponentPtr field(new FieldInstructionExponent);
+  std::string name;
+  getOptionalAttribute(attributes, "name", name);
+  std::string ns;
+  getOptionalAttribute(attributes, "ns", ns);
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionExponentPtr field(
+    new FieldInstructionExponent(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string presence;
   if(getOptionalAttribute(attributes, "presence", presence))
   {
@@ -714,7 +722,15 @@ TemplateBuilder::parseExponent(const std::string & tag, const AttributeMap& attr
 void
 TemplateBuilder::parseMantissa(const std::string & tag, const AttributeMap& attributes)
 {
-  FieldInstructionMantissaPtr field(new FieldInstructionMantissa);
+  std::string name;
+  getOptionalAttribute(attributes, "name", name);
+  std::string ns;
+  getOptionalAttribute(attributes, "ns", ns);
+  std::string type;
+  std::string typeNs;
+  schemaElements_.top().second->getApplicationType(type, typeNs);
+  FieldInstructionMantissaPtr field(
+    new FieldInstructionMantissa(registry_->fieldRegistry(), name, ns, type, typeNs));
   std::string presence;
   if(getOptionalAttribute(attributes, "presence", presence))
   {

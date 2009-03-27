@@ -140,7 +140,7 @@ Encoder::encodeSegmentBody(
     {
       if(verboseOut_)
       {
-        (*verboseOut_) << "Encode instruction[" <<nField << "]: " << instruction->getIdentity()->name() << std::endl;
+        (*verboseOut_) << "Encode instruction[" <<nField << "]: " << instruction->getIdentity().name() << std::endl;
       }
       instruction->encode(destination, pmap, *this, fieldSet);
     }

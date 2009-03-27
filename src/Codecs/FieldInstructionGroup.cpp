@@ -22,10 +22,11 @@ FieldInstructionGroup::FieldInstructionGroup(
 {
 }
 
+#if 0
 FieldInstructionGroup::FieldInstructionGroup()
 {
 }
-
+#endif
 FieldInstructionGroup::~FieldInstructionGroup()
 {
 }
@@ -57,7 +58,8 @@ FieldInstructionGroup::decodeNop(
       decoder.decodeGroup(source, segmentBody_, *group);
       Messages::FieldCPtr field(Messages::FieldGroup::create(group));
       fieldSet.addField(
-        identity_,
+        fieldRegistry_,
+        fieldIndex_,
         field);
     }
     else
@@ -86,7 +88,7 @@ FieldInstructionGroup::encodeNop(
 {
   // retrieve the field corresponding to this group
   Messages::FieldCPtr field;
-  if(fieldSet.getField(identity_->name(), field))
+  if(fieldSet.getField(fieldRegistry_, fieldIndex_, field))
   {
     Messages::GroupCPtr group = field->toGroup();
     encoder.encodeGroup(destination, segmentBody_, *group);

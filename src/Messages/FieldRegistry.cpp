@@ -55,13 +55,21 @@ FieldRegistry::findIndexQualified(
 FieldIdentity &
 FieldRegistry::get(FieldRegistry::Index index)
 {
-  throw ::QuickFAST::FieldNotPresent("Internal error: Field Identity index out of range.");
+  if(index >= identities_.size())
+  {
+    throw ::QuickFAST::FieldNotPresent("Internal error: Field Identity index out of range.");
+  }
+  return identities_[index];
 }
 
 const FieldIdentity &
 FieldRegistry::get(FieldRegistry::Index index) const
 {
-  throw ::QuickFAST::FieldNotPresent("Internal error: Field Identity index out of range.");
+  if(index >= identities_.size())
+  {
+    throw ::QuickFAST::FieldNotPresent("Internal error: Field Identity index out of range.");
+  }
+  return identities_[index];
 }
 
 

@@ -18,6 +18,7 @@
 #include <Common/QuickFAST_Export.h>
 #include <Messages/Field_fwd.h>
 #include <Messages/FieldIdentity.h>
+#include <Messages/FieldRegistry.h>
 #include <Common/Profiler.h>
 namespace QuickFAST{
   namespace Messages{
@@ -26,8 +27,11 @@ namespace QuickFAST{
     {
     public:
       /// @brief Construct from an identity and a typed value.
-      MessageField(const FieldIdentityCPtr & identity, const FieldCPtr & field)
-        : identity_(identity)
+      MessageField(
+        const FieldRegistry & registry,
+        FieldRegistry::Index index, const FieldCPtr & field)
+        : registry_(&registry)
+        , index_(index)
         , field_(field)
       {
       }
@@ -35,7 +39,8 @@ namespace QuickFAST{
       /// @brief copy constructor
       /// @param rhs the source from which to copy
       MessageField(const MessageField & rhs)
-        : identity_(rhs.identity_)
+        : registry_(rhs.registry_)
+        , index_(rhs.index_)
         , field_(rhs.field_)
       {
       }
@@ -46,13 +51,13 @@ namespace QuickFAST{
       /// @returns the fully qualified field name
       const std::string name()const
       {
-        return identity_->name();
+        return registry_->get(index_).name();
       }
       /// @brief get the identity of the field
       /// @returns the identifying information for this field
-      FieldIdentityCPtr getIdentity()const
+      const FieldIdentity & getIdentity()const
       {
-        return identity_;
+        return registry_->get(index_);
       }
 
       /// @brief get the value of the field
@@ -62,7 +67,9 @@ namespace QuickFAST{
         return field_;
       }
     private:
-      FieldIdentityCPtr identity_;
+      // a pointer so we can swap
+      const FieldRegistry * registry_;
+      FieldRegistry::Index index_;
       FieldCPtr field_;
     };
   }
