@@ -6,6 +6,7 @@
 #include <Codecs/DataSource.h>
 #include <Codecs/Decoder.h>
 #include <Codecs/Encoder.h>
+#include <Codecs/TemplateRegistry.h>
 #include <Messages/Group.h>
 #include <Messages/FieldGroup.h>
 
@@ -53,7 +54,9 @@ FieldInstructionGroup::decodeNop(
     }
     if(fieldSet.getApplicationType() != segmentBody_->getApplicationType())
     {
-      Messages::GroupPtr group(new Messages::Group(segmentBody_->fieldCount()));
+      Messages::GroupPtr group(new Messages::Group(
+        decoder.getTemplateRegistry()->fieldRegistry(),
+        segmentBody_->fieldCount()));
       group->setApplicationType(segmentBody_->getApplicationType(), segmentBody_->getApplicationTypeNamespace());
       decoder.decodeGroup(source, segmentBody_, *group);
       Messages::FieldCPtr field(Messages::FieldGroup::create(group));

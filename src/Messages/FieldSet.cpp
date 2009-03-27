@@ -11,8 +11,9 @@
 using namespace ::QuickFAST;
 using namespace ::QuickFAST::Messages;
 
-FieldSet::FieldSet(size_t res)
-: fields_(reinterpret_cast<MessageField *>(new unsigned char[sizeof(MessageField) * res]))
+FieldSet::FieldSet(const FieldRegistry & fieldRegistry, size_t res)
+: fieldRegistry_(fieldRegistry)
+, fields_(reinterpret_cast<MessageField *>(new unsigned char[sizeof(MessageField) * res]))
 , capacity_(res)
 , used_(0)
 {
@@ -22,6 +23,7 @@ FieldSet::FieldSet(size_t res)
 FieldSet::FieldSet(const FieldSet & rhs)
 : applicationType_(rhs.applicationType_)
 , applicationTypeNs_(rhs.applicationTypeNs_)
+, fieldRegistry_(rhs.fieldRegistry_)
 , fields_(reinterpret_cast<MessageField *>(new unsigned char[sizeof(MessageField) * rhs.used_]))
 , capacity_(rhs.capacity_)
 , used_(rhs.used_)
@@ -145,5 +147,5 @@ FieldSet::getIdentity(const std::string &name, const FieldIdentity *& identity) 
 DecodedFields *
 FieldSet::createdNestedFields(size_t size)const
 {
-  return new FieldSet(size);
+  return new FieldSet(fieldRegistry_, size);
 }

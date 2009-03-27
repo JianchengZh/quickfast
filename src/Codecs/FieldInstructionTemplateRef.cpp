@@ -5,6 +5,7 @@
 #include "FieldInstructionTemplateRef.h"
 #include <Codecs/DataSource.h>
 #include <Codecs/Decoder.h>
+#include <Codecs/TemplateRegistry.h>
 #include <Codecs/Encoder.h>
 #include <Messages/Message.h>
 #include <Messages/Group.h>
@@ -68,7 +69,10 @@ FieldInstructionTemplateRef::decodeNop(
         {
           // application types do not match.  Decode this into a FieldGroup
           size_t fieldCount = target->fieldCount();
-          Messages::GroupPtr group(new Messages::Group(fieldCount));
+          Messages::GroupPtr group(
+            new Messages::Group(
+              decoder.getTemplateRegistry()->fieldRegistry(),
+              fieldCount));
           group->setApplicationType(target->getApplicationType(), target->getApplicationTypeNamespace());
           decoder.decodeGroup(
             source,

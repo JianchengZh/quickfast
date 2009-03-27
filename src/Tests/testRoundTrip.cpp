@@ -220,7 +220,9 @@ BOOST_AUTO_TEST_CASE(testRoundTripSequenceNoPMAP)
   Messages::FieldRegistry::Index  index_mktDepth = fieldRegistry.addFieldIdentity("mktDepth"); // @TODO: , "", "instrumentreferencedata","");
   Messages::FieldRegistry::Index  index_mdBookType = fieldRegistry.addFieldIdentity("mdBookType"); // @TODO: , "", "instrumentreferencedata","");
 
-  Messages::Message msg(templateRegistry->maxFieldCount());
+  Messages::Message msg(
+    fieldRegistry,
+    templateRegistry->maxFieldCount());
 
 //   <uInt32 name=\"timestamp\" id=\"52\"><delta/></uInt32>"
   msg.addField(
@@ -270,7 +272,9 @@ BOOST_AUTO_TEST_CASE(testRoundTripSequenceNoPMAP)
 //   <sequence name=\"MDFeedTypes\">"
 //     <length name=\"noOfStreams\" id=\"1141\"/>"
   Messages::SequencePtr sequence_MDFeedTypes(new Messages::Sequence);
-  Messages::FieldSetPtr entry(new Messages::FieldSet(6)); // todo Hardcoded 6?
+  Messages::FieldSetPtr entry(new Messages::FieldSet(
+    fieldRegistry,
+    6)); // todo Hardcoded 6?
 
 //     <string name=\"streamType\" id=\"1022\"/>"
   entry->addField(
@@ -297,7 +301,9 @@ BOOST_AUTO_TEST_CASE(testRoundTripSequenceNoPMAP)
 
   sequence_MDFeedTypes->addEntry(entry);
 
-  entry.reset(new Messages::FieldSet(6));
+  entry.reset(new Messages::FieldSet(
+    fieldRegistry,
+    6));
 //     <string name=\"streamType\" id=\"1022\"/>"
   entry->addField(
     fieldRegistry,
@@ -335,7 +341,9 @@ BOOST_AUTO_TEST_CASE(testRoundTripSequenceNoPMAP)
 
   Codecs::Decoder decoder(templateRegistry);
   Codecs::DataSourceString source(fastString);
-  Messages::Message msgOut(templateRegistry->maxFieldCount());
+  Messages::Message msgOut(
+    fieldRegistry,
+    templateRegistry->maxFieldCount());
   decoder.decodeMessage(source, msgOut);
 
   validateMessage1(msgOut);

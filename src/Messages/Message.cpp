@@ -9,55 +9,9 @@
 using namespace ::QuickFAST;
 using namespace ::QuickFAST::Messages;
 
-Message::Message(size_t expectedNumberOfFields)
-: FieldSet(expectedNumberOfFields)
+Message::Message(const FieldRegistry & fieldRegistry, size_t expectedNumberOfFields)
+: FieldSet(fieldRegistry, expectedNumberOfFields)
 {
-  applicationType_ = "any";
+  applicationType_ = "";
 }
 
-//bool
-//Message::isPresent(const std::string & name) const
-//{
-//  for(size_t index = 0; index < fields_.size(); ++index)
-//  {
-//    if(name == fields_[index].name())
-//    {
-//      return fields_[index].getField()->isDefined();
-//    }
-//  }
-//  return false;
-//}
-//
-//void
-//Message::addField(const FieldIdentity & identity, FieldCPtr & value)
-//{
-//  fields_.push_back(MessageField(identity, value));
-//}
-//
-//bool
-//Message::getField(const std::string &name, FieldCPtr & value) const
-//{
-//  for(size_t index = 0; index < fields_.size(); ++index)
-//  {
-//    if(name == fields_[index].name())
-//    {
-//      value = fields_[index].getField();
-//      return value->isDefined();
-//    }
-//  }
-//  return false;
-//}
-//
-//bool
-//Message::getIdentity(const std::string &name, FieldIdentity & identity) const
-//{
-//  for(size_t index = 0; index < fields_.size(); ++index)
-//  {
-//    if(name == fields_[index].name())
-//    {
-//      identity = fields_[index].getIdentity();
-//      return true;
-//    }
-//  }
-//  return false;
-//}

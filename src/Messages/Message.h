@@ -18,7 +18,7 @@ namespace QuickFAST{
       Message();
     public:
       /// @brief Construct an empty Message
-      Message(size_t expectedNumberOfFields);
+      Message(const FieldRegistry & fieldRegistry, size_t expectedNumberOfFields);
 
       /// @brief Copy construct Message
       Message(const Message & rhs)

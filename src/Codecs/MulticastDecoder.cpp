@@ -128,7 +128,9 @@ MulticastDecoder::handleReceive(
     try
     {
       DataSourceBuffer source(buffer->get(), bytesReceived);
-      Messages::Message message(decoder_.getTemplateRegistry()->maxFieldCount());
+      Messages::Message message(
+        decoder_.getTemplateRegistry()->fieldRegistry(),
+        decoder_.getTemplateRegistry()->maxFieldCount());
       decoder_.reset();
       decoder_.decodeMessage(source, message);
 

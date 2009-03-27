@@ -139,7 +139,7 @@ namespace QuickFAST{
       bool more = true;
       while(source.messageAvailable() > 0 && messageCount_ < messageCountLimit_)
       {
-        MessageType message(maxFieldCount_);
+        MessageType message(decoder_.getTemplateRegistry()->fieldRegistry(), maxFieldCount_);
         if(resetOnMessage_)
         {
           decoder_.reset();

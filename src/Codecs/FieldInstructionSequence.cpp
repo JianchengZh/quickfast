@@ -6,6 +6,7 @@
 #include <Codecs/DataSource.h>
 #include <Codecs/Decoder.h>
 #include <Codecs/Encoder.h>
+#include <Codecs/TemplateRegistry.h>
 #include <Codecs/FieldInstructionUInt32.h>
 #include <Messages/Message.h>
 #include <Messages/FieldSequence.h>
@@ -25,12 +26,6 @@ FieldInstructionSequence::FieldInstructionSequence(
 {
 }
 
-#if 0
-FieldInstructionSequence::FieldInstructionSequence()
-{
-}
-#endif
-
 FieldInstructionSequence::~FieldInstructionSequence()
 {
 }
@@ -48,7 +43,7 @@ FieldInstructionSequence::decodeNop(
   }
   size_t length = 0;
   Codecs::FieldInstructionCPtr lengthInstruction;
-  Messages::FieldSet lengthSet(1);
+  Messages::FieldSet lengthSet(decoder.getTemplateRegistry()->fieldRegistry(), 1);
   if(segment_->getLengthInstruction(lengthInstruction))
   {
     source.beginField(lengthInstruction->getIdentity().name());
@@ -85,7 +80,10 @@ FieldInstructionSequence::decodeNop(
       decoder.logMessage(msg.str());
     }
 
-    Messages::FieldSetPtr entrySet(new Messages::FieldSet(segment_->fieldCount()));
+    Messages::FieldSetPtr entrySet(
+      new Messages::FieldSet(
+        decoder.getTemplateRegistry()->fieldRegistry(),
+        segment_->fieldCount()));
     entrySet->setApplicationType(segment_->getApplicationType(), segment_->getApplicationTypeNamespace());
     decoder.decodeGroup(source, segment_, *entrySet);
     sequence->addEntry(entrySet);
@@ -119,7 +117,8 @@ FieldInstructionSequence::encodeNop(
 
     // todo: performance could be improved here
     Messages::FieldCPtr lengthField(Messages::FieldUInt32::create(length));
-    Messages::FieldSet lengthSet(1);
+    Messages::FieldSet lengthSet(
+      encoder.getTemplateRegistry()->fieldRegistry(), 1);
 
     Codecs::FieldInstructionCPtr lengthInstruction;
     if(segment_->getLengthInstruction(lengthInstruction))

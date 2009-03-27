@@ -22,7 +22,7 @@ namespace QuickFAST{
       /// Constant iterator for the collection
       typedef const MessageField * const_iterator;
       /// @brief Construct an empty FieldSet
-      explicit FieldSet(size_t res);
+      FieldSet(const FieldRegistry & fieldRegistry, size_t res);
       /// @brief Copy Constructor
       /// @param rhs is the FieldSet to be copied into this one
       FieldSet(const FieldSet & rhs);
@@ -142,6 +142,7 @@ namespace QuickFAST{
       /// Namespace for the Application type as set by &lt;typeRef>
       std::string applicationTypeNs_;
     private:
+      const FieldRegistry & fieldRegistry_;
       /// The collection of fields
       MessageField * fields_;
       size_t capacity_;

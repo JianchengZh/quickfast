@@ -1,3 +1,21 @@
+Fri Mar 27 21:07:26 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
+        * src/Codecs/Decoder.cpp:
+        * src/Codecs/FieldInstruction.cpp:
+        * src/Codecs/FieldInstructionDecimal.cpp:
+        * src/Codecs/FieldInstructionGroup.cpp:
+        * src/Codecs/FieldInstructionSequence.cpp:
+        * src/Codecs/FieldInstructionTemplateRef.cpp:
+        * src/Codecs/MulticastDecoder.cpp:
+        * src/Codecs/SynchronousDecoder.h:
+        * src/Messages/FieldSet.h:
+        * src/Messages/FieldSet.cpp:
+        * src/Messages/Message.h:
+        * src/Messages/Message.cpp:
+        * src/Tests/testFieldInstructions.cpp:
+        * src/Tests/testFieldOperations.cpp:
+        * src/Tests/testRoundTrip.cpp:
+        Closer, but still not enabled.
+
 Fri Mar 27 19:53:49 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
 
 

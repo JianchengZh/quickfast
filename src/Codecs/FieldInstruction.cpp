@@ -20,23 +20,10 @@ FieldInstruction::FieldInstruction(
         const std::string & typeNamespace)
   : fieldRegistry_(fieldRegistry)
   , fieldIndex_(fieldRegistry_.addFieldIdentity(name, fieldNamespace, type, typeNamespace))
-  //identity_(new Messages::FieldIdentity(name, fieldNamespace))
-  , mandatory_(true)
-  , fieldOp_(new FieldOpNop)
-{
-  int todo;
-}
-
-/*
-FieldInstruction::FieldInstruction()
-  : fieldRegistry_(fieldRegistry)
-  , fieldIndex_(Messages::FieldRegistry::UNKNOWN)
-//  identity_(new Messages::FieldIdentity)
   , mandatory_(true)
   , fieldOp_(new FieldOpNop)
 {
 }
-*/
 
 FieldInstruction::~FieldInstruction()
 {
@@ -46,7 +33,6 @@ void
 FieldInstruction::setPresence(bool mandatory)
 {
   mandatory_ = mandatory;
-//  identity_->setMandatory(mandatory);
 }
 
 void
@@ -73,7 +59,7 @@ FieldInstruction::getFieldOp(FieldOpCPtr & fieldOp) const
 size_t
 FieldInstruction::presenceMapBitsRequired()const
 {
-  if(fieldOp_->usesPresenceMap(mandatory_/*identity_->mandatory()*/))
+  if(fieldOp_->usesPresenceMap(mandatory_))
   {
     return maxPresenceMapBits();
   }

@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(testFieldOperationDispatch)
   Codecs::DataSourceString source("");
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
 
   // and encode
   Tests::DataDestinationMock destination;
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_1_1)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
 
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
 
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_1_1)
   BOOST_CHECK(pmap == pmapResult);
 
   // check the error condition: constant value doesn't match
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   Messages::FieldCPtr dataField = Messages::FieldUInt32::create(99);
   fieldSet2.addField(
     fieldRegistry,
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_1_1)
     dataField);
   BOOST_CHECK_THROW(field.encode(destination, pmapResult, encoder, fieldSet2), EncodingError);
   // check the error condition: missing mandatory field
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_CHECK_THROW(field.encode(destination, pmapResult, encoder, fieldSet3), EncodingError);
 }
 
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_1_2)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
 
   // test a: pmap = 1
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
@@ -264,7 +264,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_1_2)
   BOOST_CHECK(pFieldEntry == fieldSet1.end());
 
   // test b: pmap = 0
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
 
   // Check to be sure no data was generated
@@ -318,7 +318,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_2_1)
   Codecs::Decoder decoder(registry);
 
   // test a: pmap = 0
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
 
   // should generate 1 field
@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_2_1)
   BOOST_CHECK(pFieldEntry == fieldSet1.end());
 
   // test b: pmap = 1
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
 
   pFieldEntry = fieldSet2.begin();
@@ -386,7 +386,7 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_2_2)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
 
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
 
@@ -444,11 +444,11 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_3_1)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -521,11 +521,11 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_3_2)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -593,13 +593,13 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_4_1)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
-  Messages::FieldSet fieldSet4(10);
+  Messages::FieldSet fieldSet4(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet4));
 
   // Was all input consumed?
@@ -673,13 +673,13 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_5_1)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
-  Messages::FieldSet fieldSet4(10);
+  Messages::FieldSet fieldSet4(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet4));
 
   // Was all input consumed?
@@ -753,11 +753,11 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_5_2)
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -831,13 +831,13 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_5_3)
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
 
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
 
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -910,13 +910,13 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_5_4)
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
-  Messages::FieldSet fieldSet4(10);
+  Messages::FieldSet fieldSet4(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet4));
 
   // Was all input consumed?
@@ -994,11 +994,11 @@ BOOST_AUTO_TEST_CASE(testAsciiTailMandatory)
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -1093,13 +1093,13 @@ BOOST_AUTO_TEST_CASE(testAppendix_3_2_6) // SPEC ERROR: _3 s/b _1
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
 
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
 
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -1167,11 +1167,11 @@ BOOST_AUTO_TEST_CASE(test_Utf8_Copy_Mandatory)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -1243,11 +1243,11 @@ BOOST_AUTO_TEST_CASE(test_Utf8_Copy_optional)
   Codecs::Decoder decoder(registry);
 
   // Capture results in a field set
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
@@ -1309,13 +1309,13 @@ BOOST_AUTO_TEST_CASE(test_Utf8_Delta_Mandatory)
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
-  Messages::FieldSet fieldSet4(10);
+  Messages::FieldSet fieldSet4(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet4));
 
   // Was all input consumed?
@@ -1392,11 +1392,11 @@ BOOST_AUTO_TEST_CASE(testUtf8_Tail_Mandatory)
   Codecs::TemplateRegistryPtr registry(new Codecs::TemplateRegistry(3,3,indexer.size()));
   Codecs::Decoder decoder(registry);
 
-  Messages::FieldSet fieldSet1(10);
+  Messages::FieldSet fieldSet1(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet1));
-  Messages::FieldSet fieldSet2(10);
+  Messages::FieldSet fieldSet2(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet2));
-  Messages::FieldSet fieldSet3(10);
+  Messages::FieldSet fieldSet3(fieldRegistry, 10);
   BOOST_REQUIRE(field.decode(source, pmap, decoder, fieldSet3));
 
   // Was all input consumed?
