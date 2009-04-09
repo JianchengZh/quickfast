@@ -14,10 +14,12 @@ using namespace ::QuickFAST::Messages;
 FieldSet::FieldSet(const FieldRegistry & fieldRegistry, size_t res)
 : fieldRegistry_(fieldRegistry)
 , fields_(reinterpret_cast<MessageField *>(new unsigned char[sizeof(MessageField) * res]))
+//, fieldIndex_(new size_t[fieldRegistry.size()])
 , capacity_(res)
 , used_(0)
 {
-  memset(fields_, 0, sizeof(sizeof(MessageField) * capacity_));
+//  memset(fields_, 0, sizeof(sizeof(MessageField) * capacity_));
+//  memset(fieldIndex_.get(), ~char(0), sizeof(size_t) * fieldRegistry.size() );
 }
 
 FieldSet::FieldSet(const FieldSet & rhs)
@@ -28,11 +30,12 @@ FieldSet::FieldSet(const FieldSet & rhs)
 , capacity_(rhs.capacity_)
 , used_(rhs.used_)
 {
-  memset(fields_, 0, sizeof(sizeof(MessageField) * capacity_));
+//  memset(fields_, 0, sizeof(sizeof(MessageField) * capacity_));
   for(size_t nField = 0; nField < used_; ++nField)
   {
     new (&fields_[nField]) MessageField(rhs.fields_[nField]);
   }
+  int todo_copy_field_index;
 }
 
 FieldSet::~FieldSet()
@@ -72,8 +75,19 @@ FieldSet::clear(size_t capacity)
     reserve(capacity);
   }
   memset(fields_, 0, sizeof(sizeof(MessageField) * capacity_));
+//  memset(fieldIndex_.get(), ~char(0), sizeof(size_t) * fieldRegistry_.size());
 }
 
+bool
+FieldSet::isPresent(FieldHandle index)const
+{
+  return
+    index < fieldRegistry_.size()
+//&& fieldIndex_[index] != ~size_t(0)
+//&& fields_[fieldIndex_[index]].getField()->isDefined();
+//    && fields_[index].getField()->isDefined()
+  ;
+}
 
 bool
 FieldSet::isPresent(const std::string & name) const
@@ -89,9 +103,10 @@ FieldSet::isPresent(const std::string & name) const
 }
 
 void
-FieldSet::addField(const FieldRegistry & registry, FieldRegistry::Index index, const FieldCPtr & value)
+FieldSet::addField(const FieldRegistry & registry, FieldHandle index, const FieldCPtr & value)
 {
   PROFILE_POINT("FieldSet::addField");
+#if 10
   if(used_ >= capacity_)
   {
     PROFILE_POINT("FieldSet::grow");
@@ -99,7 +114,11 @@ FieldSet::addField(const FieldRegistry & registry, FieldRegistry::Index index, c
     reserve((used_ * 3) / 2);
   }
   new (fields_ + used_) MessageField(registry, index, value);
+//  fieldIndex_[index] = used_;
   ++used_;
+#else
+  new (fields_ + index) MessageField(registry, index, value);
+#endif
 }
 
 bool
@@ -121,14 +140,20 @@ FieldSet::getField(const std::string &name, FieldCPtr & value) const
 bool
 FieldSet::getField(
   const FieldRegistry & registry,
-  FieldRegistry::Index index,
+  FieldHandle index,
   FieldCPtr & value) const
 {
-  int todo;
-  const std::string & name = registry.get(index).name();
-  return getField(name, value);
+  if(
+    index < fieldRegistry_.size()
+//    && fieldIndex_[index] != ~size_t(0)
+    )
+  {
+//    value = fields_[fieldIndex_[index]].getField();
+//    value = fields_[index].getField();
+    return value->isDefined();
+  }
+  return false;
 }
-
 
 bool
 FieldSet::getIdentity(const std::string &name, const FieldIdentity *& identity) const

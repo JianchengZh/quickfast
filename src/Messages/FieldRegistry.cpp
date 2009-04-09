@@ -5,30 +5,32 @@
 #include "FieldRegistry.h"
 #include <Common/Exceptions.h>
 
-//#include <Codecs/Field.h>
-//#include <Codecs/DictionaryIndexer.h>
+namespace QuickFAST{
+  namespace Messages{
+  }
+}
 
 using namespace QuickFAST;
 using namespace QuickFAST::Messages;
 
 
-FieldRegistry::Index
+FieldHandle
 FieldRegistry::addFieldIdentity(
   const std::string & localName,
   const std::string & fieldNamespace,
   const std::string & applicationType,
   const std::string & applicationTypeNamespace)
 {
-  Index index = identities_.size();
-  identities_.push_back(FieldIdentity(localName, fieldNamespace, applicationType, applicationTypeNamespace));
+  FieldHandle index = identities_.size();
+  identities_.push_back(FieldRegistryEntry(localName, fieldNamespace, applicationType, applicationTypeNamespace));
   std::string qualifiedName;
   qualifyName(qualifiedName, localName, fieldNamespace, applicationType, applicationTypeNamespace);
   indexes_[qualifiedName] = index;
   return index;
 }
 
-FieldRegistry::Index
-FieldRegistry::findIndex(
+FieldHandle
+FieldRegistry::findHandle(
   const std::string & localName,
   const std::string & fieldNamespace,
   const std::string & applicationType,
@@ -36,14 +38,14 @@ FieldRegistry::findIndex(
 {
   std::string qualifiedName;
   qualifyName(qualifiedName, localName, fieldNamespace, applicationType, applicationTypeNamespace);
-  return findIndexQualified(qualifiedName);
+  return findHandleQualified(qualifiedName);
 }
 
-FieldRegistry::Index
-FieldRegistry::findIndexQualified(
+FieldHandle
+FieldRegistry::findHandleQualified(
   const std::string & qualifiedName) const
 {
-  Index index = UNKNOWN;
+  FieldHandle index = FieldHandleUnknown;
   FieldNameToIndex::const_iterator it = indexes_.find(qualifiedName);
   if(it != indexes_.end())
   {
@@ -53,7 +55,7 @@ FieldRegistry::findIndexQualified(
 }
 
 FieldIdentity &
-FieldRegistry::get(FieldRegistry::Index index)
+FieldRegistry::get(FieldHandle index)
 {
   if(index >= identities_.size())
   {
@@ -63,7 +65,7 @@ FieldRegistry::get(FieldRegistry::Index index)
 }
 
 const FieldIdentity &
-FieldRegistry::get(FieldRegistry::Index index) const
+FieldRegistry::get(FieldHandle index) const
 {
   if(index >= identities_.size())
   {

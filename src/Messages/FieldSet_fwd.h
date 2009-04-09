@@ -13,6 +13,11 @@ namespace QuickFAST{
     typedef boost::shared_ptr<FieldSet> FieldSetPtr;
     /// @brief Smart pointer to a const FieldSet.
     typedef boost::shared_ptr<const FieldSet> FieldSetCPtr;
+
+    /// an opaque handle to retrieve a field from a FieldSet
+    typedef size_t FieldHandle;
+    /// @brief Special value to indicate an unknown field.
+    static const FieldHandle FieldHandleUnknown = ~0;
   }
 }
 #endif // FIELDSET_FWD_H

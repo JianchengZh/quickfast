@@ -42,8 +42,11 @@ namespace QuickFAST{
 
       /// @brief Get the count of fields in the set
       ///
-      /// Group fields are counted individually.
-      /// A Sequence is counted as one field.
+      /// An unmerged Group counts as one field.
+      /// A Sequence counts as one field.
+      /// Merged group fields are counted individually.
+      /// Note: a group will be merged if the application type of the group
+      ///       matches the application type of this field set.
       /// @returns the field count.
       size_t size()const
       {
@@ -55,13 +58,14 @@ namespace QuickFAST{
       /// @returns true if the field is present.  Returns false if the field is
       /// unknown or doesn't currently have a value in this set.
       bool isPresent(const std::string & name)const;
+      bool isPresent(FieldHandle index)const;
 
       /// @brief Add a field to the set.
       ///
       /// The FieldCPtr is copied, not the actual Field object.
       /// @param identity identifies this field
       /// @param value is the value to be assigned.
-      void addField(const FieldRegistry & registry, FieldRegistry::Index index, const FieldCPtr & value);
+      void addField(const FieldRegistry & registry, FieldHandle index, const FieldCPtr & value);
 
 
       /// @brief Get the value of the specified field.
@@ -69,7 +73,7 @@ namespace QuickFAST{
       /// @param[out] value is the value that was found.
       /// @returns true if the field was found and has a value;
       bool getField(const std::string &name, FieldCPtr & value) const;
-      bool getField(const FieldRegistry & registry, FieldRegistry::Index index, FieldCPtr & value) const;
+      bool getField(const FieldRegistry & registry, FieldHandle index, FieldCPtr & value) const;
       /// @brief Get the identity information for the specified field
       /// @param[in] name identifies the desired field
       /// @param[out] identity is the information for the field that was found
@@ -145,6 +149,9 @@ namespace QuickFAST{
       const FieldRegistry & fieldRegistry_;
       /// The collection of fields
       MessageField * fields_;
+      /// map FieldHandle number to fields_index
+//
+      boost::scoped_array<size_t> fieldIndex_;
       size_t capacity_;
       size_t used_;
     };

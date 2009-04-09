@@ -29,7 +29,7 @@ namespace QuickFAST{
       /// @brief Construct from an identity and a typed value.
       MessageField(
         const FieldRegistry & registry,
-        FieldRegistry::Index index, const FieldCPtr & field)
+        FieldHandle index, const FieldCPtr & field)
         : registry_(&registry)
         , index_(index)
         , field_(field)
@@ -69,7 +69,7 @@ namespace QuickFAST{
     private:
       // a pointer so we can swap
       const FieldRegistry * registry_;
-      FieldRegistry::Index index_;
+      FieldHandle index_;
       FieldCPtr field_;
     };
   }

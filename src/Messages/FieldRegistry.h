@@ -11,19 +11,37 @@
 #include "FieldRegistry_fwd.h"
 #include <Common/QuickFAST_Export.h>
 
+#include <Messages/FieldSet_fwd.h>
 #include <Messages/FieldIdentity.h>
 
 namespace QuickFAST{
   namespace Messages{
+
+    /// @brief this class exists solely to allow FieldRegistry to store FieldIdentities
+    /// in a vector without requiring public constructor/destructors for FieldIdentity
+    class FieldRegistryEntry : public FieldIdentity
+    {
+    public:
+      explicit FieldRegistryEntry(
+        const std::string & name,
+        const std::string & fieldNamespace = "",
+        const std::string & applicationType = "",
+        const std::string & applicationTypeNamespace = "")
+        : FieldIdentity(name, fieldNamespace, applicationType, applicationTypeNamespace)
+      {
+      }
+
+      /// @brief private constructor prevents stack or static allocations, or embedding
+      ~FieldRegistryEntry()
+      {
+      }
+    };
+
     /// @brief A registry of known field identities.
     ///
     class QuickFAST_Export FieldRegistry
     {
     public:
-      /// @brief Mostly opaque "handle" to the field identity
-      typedef size_t Index;
-      /// @brief Special value to indicate an unknown field.
-      static const Index UNKNOWN = ~0;
 
       /// @brief Construct and empty registry.
       FieldRegistry()
@@ -37,19 +55,19 @@ namespace QuickFAST{
 
       /// @brief Add a definition to the registry
       /// @param value smart pointer to the template to be added
-      Index addFieldIdentity(
+      FieldHandle addFieldIdentity(
         const std::string & localName,
         const std::string & fieldNamespace = "",
         const std::string & applicationType = "",
         const std::string & applicationTypeNamespace = "");
 
-      Index findIndex(
+      FieldHandle findHandle(
         const std::string & localName,
         const std::string & fieldNamespace = "",
         const std::string & applicationType = "",
         const std::string & applicationTypeNamespace = "") const;
 
-      Index findIndexQualified(
+      FieldHandle findHandleQualified(
         const std::string & qualifiedName) const;
 
       static void qualifyName(
@@ -62,8 +80,8 @@ namespace QuickFAST{
         FieldIdentity::qualifyName(qualifiedName, localName, fieldNamespace, applicationType, applicationTypeNamespace);
       }
 
-      FieldIdentity & get(Index index);
-      const FieldIdentity & get(Index index) const;
+      FieldIdentity & get(FieldHandle index);
+      const FieldIdentity & get(FieldHandle index) const;
 
       size_t size()const
       {
@@ -72,7 +90,7 @@ namespace QuickFAST{
 
     private:
       /// @brief fast access via indexing
-      typedef std::vector<FieldIdentity> FieldIdentityVector;
+      typedef std::vector<FieldRegistryEntry> FieldIdentityVector;
       /// @brief qualified name to index
       typedef std::map<std::string, size_t> FieldNameToIndex;
 

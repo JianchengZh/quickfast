@@ -199,26 +199,26 @@ BOOST_AUTO_TEST_CASE(testRoundTripSequenceNoPMAP)
 
   Messages::FieldRegistry fieldRegistry;
 
-  Messages::FieldRegistry::Index  index_timestamp = fieldRegistry.addFieldIdentity("timestamp", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_srcId = fieldRegistry.addFieldIdentity("srcId", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_seqNum = fieldRegistry.addFieldIdentity("seqNum", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_isix = fieldRegistry.addFieldIdentity("isix", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_isin = fieldRegistry.addFieldIdentity("isin", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_exchId = fieldRegistry.addFieldIdentity("exchId", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_instGrp = fieldRegistry.addFieldIdentity("instGrp", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_instTypCod = fieldRegistry.addFieldIdentity("instTypCod", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_currCode = fieldRegistry.addFieldIdentity("currCode", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_ticSiz = fieldRegistry.addFieldIdentity("ticSiz", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_setId = fieldRegistry.addFieldIdentity("setId", "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_MDFeedTypes = fieldRegistry.addFieldIdentity("MDFeedTypes", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_timestamp = fieldRegistry.addFieldIdentity("timestamp", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_srcId = fieldRegistry.addFieldIdentity("srcId", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_seqNum = fieldRegistry.addFieldIdentity("seqNum", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_isix = fieldRegistry.addFieldIdentity("isix", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_isin = fieldRegistry.addFieldIdentity("isin", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_exchId = fieldRegistry.addFieldIdentity("exchId", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_instGrp = fieldRegistry.addFieldIdentity("instGrp", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_instTypCod = fieldRegistry.addFieldIdentity("instTypCod", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_currCode = fieldRegistry.addFieldIdentity("currCode", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_ticSiz = fieldRegistry.addFieldIdentity("ticSiz", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_setId = fieldRegistry.addFieldIdentity("setId", "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_MDFeedTypes = fieldRegistry.addFieldIdentity("MDFeedTypes", "", "instrumentreferencedata","");
 // We don't need an index for the length field.
-//  Messages::FieldRegistry::Index  index_noOfStreams = fieldRegistry.addFieldIdentity("noOfStreams");
-  Messages::FieldRegistry::Index  index_streamType = fieldRegistry.addFieldIdentity("streamType"); // @TODO: , "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_streamService = fieldRegistry.addFieldIdentity("streamService"); // @TODO: , "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_inetAddr = fieldRegistry.addFieldIdentity("inetAddr"); // @TODO: , "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_port = fieldRegistry.addFieldIdentity("port"); // @TODO: , "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_mktDepth = fieldRegistry.addFieldIdentity("mktDepth"); // @TODO: , "", "instrumentreferencedata","");
-  Messages::FieldRegistry::Index  index_mdBookType = fieldRegistry.addFieldIdentity("mdBookType"); // @TODO: , "", "instrumentreferencedata","");
+//  Messages::FieldHandle  index_noOfStreams = fieldRegistry.addFieldIdentity("noOfStreams");
+  Messages::FieldHandle  index_streamType = fieldRegistry.addFieldIdentity("streamType"); // @TODO: , "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_streamService = fieldRegistry.addFieldIdentity("streamService"); // @TODO: , "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_inetAddr = fieldRegistry.addFieldIdentity("inetAddr"); // @TODO: , "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_port = fieldRegistry.addFieldIdentity("port"); // @TODO: , "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_mktDepth = fieldRegistry.addFieldIdentity("mktDepth"); // @TODO: , "", "instrumentreferencedata","");
+  Messages::FieldHandle  index_mdBookType = fieldRegistry.addFieldIdentity("mdBookType"); // @TODO: , "", "instrumentreferencedata","");
 
   Messages::Message msg(
     fieldRegistry,
