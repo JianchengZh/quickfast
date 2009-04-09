@@ -29,7 +29,7 @@ namespace QuickFAST{
       virtual void addField(const Messages::FieldIdentityCPtr & identity, const Messages::FieldCPtr & value);
       virtual void addField(
         const Messages::FieldRegistry & registry,
-        Messages::FieldRegistry::Index index,
+        Messages::FieldHandle index,
         const Messages::FieldCPtr & value);
 
       virtual bool getIdentity(const std::string &name, Messages::FieldIdentityCPtr & identity) const;

@@ -73,6 +73,7 @@ namespace QuickFAST{
       {
         typedExponent_ = exponent;
         typedMantissa_ = mantissa;
+        typedValueIsDefined_ = true;
         typedValue_ = Decimal(mantissa, exponent);
       }
 
@@ -161,6 +162,7 @@ namespace QuickFAST{
       void interpretValue(const std::string & value);
 
     private:
+      bool typedValueIsDefined_;
       exponent_t typedExponent_;
       mantissa_t typedMantissa_;
       // redundant, but efficient.  Must be Decimal(typedMantissa_, typedExponent_);

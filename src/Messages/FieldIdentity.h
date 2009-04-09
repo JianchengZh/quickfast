@@ -18,7 +18,9 @@ namespace QuickFAST{
     /// immutable fields to be shared among different field containers (dictionaries & field sets, &tc.)
     class QuickFAST_Export FieldIdentity
     {
-    public:
+      /// only fieldregistry can create a FieldIdentity
+      friend class FieldRegistryEntry;
+    private:
       /// @brief Construct the FieldIdentity
       /// @param name the localname for the field
       /// @param fieldNamespace the namespace in which the localname is defined
@@ -33,66 +35,26 @@ namespace QuickFAST{
         , fieldNamespace_(fieldNamespace)
         , applicationType_(applicationType)
         , applicationTypeNamespace_(applicationTypeNamespace)
-//        , mandatory_(true)
         , refcount_(0)
       {
         qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
       }
-
-      /// @brief Construct an anonomous FieldIdentity
-      FieldIdentity();
-
-//    private:
-      /// @brief private constructor prevents stack or static allocations, or embedding
+      /// @brief private destructor prevents stack or static allocations, or embedding
       ~FieldIdentity()
       {
       }
-    public:
-
-/*
-      /// @brief set name after construction
-      /// @param name the localname for the field
-      void setName(const std::string & name)
-      {
-        localName_ = name;
-        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
-      }
-
-      /// @brief Set Namespace after construction
-      /// @param fieldNamespace the namespace in which the localname is defined
-      void setNamespace(const std::string & fieldNamespace)
-      {
-        fieldNamespace_ = fieldNamespace;
-        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
-      }
-
-      /// @brief set name after construction
-      /// @param name the localname for the field
-      void setApplicationType(const std::string & type)
-      {
-        applicationType_ = type;
-        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
-      }
-
-      /// @brief Set Namespace after construction
-      /// @param fieldNamespace the namespace in which the localname is defined
-      void setApplicationTypeNamespace(const std::string & applicationTypeNamespace)
-      {
-        applicationTypeNamespace_ = applicationTypeNamespace;
-        qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
-      }
-*/
-
+    private:
       /// @brief Copy construct the FieldIdentity
       /// @param rhs is the FieldIdentity from which to copy
-      FieldIdentity(const FieldIdentity & rhs)
-        : localName_(rhs.localName_)
-        , fieldNamespace_(rhs.fieldNamespace_)
-        , qualifiedName_(rhs.qualifiedName_)
-        , id_(rhs.id_)
-//        , mandatory_(rhs.mandatory_)
-      {
-      }
+//      FieldIdentity(const FieldIdentity & rhs)
+//        : localName_(rhs.localName_)
+//        , fieldNamespace_(rhs.fieldNamespace_)
+//        , qualifiedName_(rhs.qualifiedName_)
+//        , id_(rhs.id_)
+//      {
+//      }
+
+    public:
 
       /// @brief Set the fields ID (not terribly useful)
       /// @param id to be stored
@@ -138,22 +100,7 @@ namespace QuickFAST{
       {
         return id_;
       }
-/*
-      /// @brief set the mandatory flag for this field.
-      /// @param mandatory is true if the field must appear in the application data type
-      void setMandatory(bool mandatory)
-      {
-        int todo_Find_a_new_home;
-        mandatory_ = mandatory;
-      }
 
-      /// @brief access the mandatory flag
-      /// @returns the value as set by setMandatory
-      bool mandatory()const
-      {
-        return mandatory_;
-      }
-*/
       static void qualifyName(
         std::string & qualifiedName,
         const std::string & localName,
@@ -169,7 +116,6 @@ namespace QuickFAST{
 
       std::string qualifiedName_; // cached for performance
       field_id_t id_;
-//      bool mandatory_;
     private:
       friend void QuickFAST_Export intrusive_ptr_add_ref(const FieldIdentity * ptr);
       friend void QuickFAST_Export intrusive_ptr_release(const FieldIdentity * ptr);

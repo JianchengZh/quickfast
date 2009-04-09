@@ -1,3 +1,104 @@
+Thu Apr  9 15:40:37 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
+
+        * .:
+        * QuickFAST.features:
+
+        * data/ARCATemplates.xml:
+
+        * m.cmd:
+
+        * src/Codecs/FieldInstruction.h:
+        * src/Codecs/FieldInstructionBitMap.cpp:
+        * src/Codecs/FieldInstructionDecimal.h:
+        * src/Codecs/FieldInstructionDecimal.cpp:
+        * src/Codecs/SynchronousDecoder.h:
+
+        * src/Common/BitMap.h:
+        * src/Common/BitMap.cpp:
+        * src/Common/Profiler.h:
+
+        * src/DotNet/DataDestination.h:
+        * src/DotNet/DataDestination.cpp:
+        * src/DotNet/DataSource.h:
+        * src/DotNet/DataSource.cpp:
+        * src/DotNet/DataSourceBuffered.h:
+        * src/DotNet/DataSourceBuffered.cpp:
+        * src/DotNet/Decimal.h:
+        * src/DotNet/Decimal.cpp:
+        * src/DotNet/Decoder.h:
+        * src/DotNet/Decoder.cpp:
+        * src/DotNet/Encoder.cpp:
+        * src/DotNet/Exceptions.h:
+        * src/DotNet/Exceptions.cpp:
+        * src/DotNet/Field.h:
+        * src/DotNet/Field.cpp:
+        * src/DotNet/FieldIdentity.h:
+        * src/DotNet/FieldIdentity.cpp:
+        * src/DotNet/FieldSet.h:
+        * src/DotNet/FieldSet.cpp:
+        * src/DotNet/Message.h:
+        * src/DotNet/Message.cpp:
+        * src/DotNet/Sequence.h:
+        * src/DotNet/Sequence.cpp:
+        * src/DotNet/Stdafx.h:
+        * src/DotNet/SynchronousDecoder.h:
+        * src/DotNet/SynchronousDecoder.cpp:
+        * src/DotNet/TemplateRegistry.h:
+        * src/DotNet/TemplateRegistry.cpp:
+        * src/DotNet/UnmanagedPtr.cpp:
+
+        * src/DotNetExamples/DotNetExampleCode:
+
+        * src/DotNetExamples/DotNetExampleCode/.svnignore:
+        * src/DotNetExamples/DotNetExampleCode/DotNetExampleCode.mpc:
+
+        * src/DotNetExamples/DotNetExampleCode/Properties/AssemblyInfo.cs:
+
+        * src/DotNetExamples/PerformanceTestDotNet:
+
+        * src/DotNetExamples/PerformanceTestDotNet/.svnignore:
+        * src/DotNetExamples/PerformanceTestDotNet/PerformanceTestDotNet.cs:
+        * src/DotNetExamples/PerformanceTestDotNet/PerformanceTestDotNet.mpc:
+
+        * src/DotNetExamples/PerformanceTestDotNet/Properties/AssemblyInfo.cs:
+
+        * src/DotNetTests/DecodingPerformance:
+
+        * src/DotNetTests/DecodingPerformance/.svnignore:
+        * src/DotNetTests/DecodingPerformance/DecodingPerformanceDotNet.mpc:
+
+        * src/DotNetTests/DecodingPerformance/Properties/AssemblyInfo.cs:
+
+        * src/Examples/PerformanceTest/NullMessage.h:
+        * src/Examples/PerformanceTest/NullMessage.cpp:
+        * src/Examples/PerformanceTest/PerformanceTest.cpp:
+
+        * src/Messages/DecodedFields.h:
+        * src/Messages/FieldIdentity.h:
+        * src/Messages/FieldIdentity.cpp:
+        * src/Messages/FieldRegistry.h:
+        * src/Messages/FieldRegistry.cpp:
+        * src/Messages/FieldSet.h:
+        * src/Messages/FieldSet.cpp:
+        * src/Messages/FieldSet_fwd.h:
+        * src/Messages/MessageField.h:
+
+        * src/Tests/resources:
+
+        * src/Tests/resources/biggest_value.xml:
+        * src/Tests/resources/smallest_value.xml:
+        * src/Tests/resources/unittest_mandatory.xml:
+        * src/Tests/resources/unittest_optional.xml:
+
+        * src/Tests/testBiggestValue.cpp:
+        * src/Tests/testRoundTrip.cpp:
+        * src/Tests/testRoundTrip1.cpp:
+        * src/Tests/testSmallestValue.cpp:
+
+        * src/Common/Bitmap.cpp:
+
+        Merge from trunk
+
 Fri Mar 27 21:07:26 UTC 2009  Dale Wilson  <wilsond@ociweb.com>
         * src/Codecs/Decoder.cpp:
         * src/Codecs/FieldInstruction.cpp:

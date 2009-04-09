@@ -25,6 +25,7 @@ FieldInstructionDecimal::FieldInstructionDecimal(
         const std::string & type,
         const std::string & typeNamespace)
   : FieldInstruction(fieldRegistry, name, fieldNamespace, type, typeNamespace)
+  , typedValueIsDefined_(false)
   , typedExponent_(0)
   , typedMantissa_(0)
   , typedValue_(0,0)
@@ -171,7 +172,7 @@ FieldInstructionDecimal::decodeDefault(
   }
   else // field not in stream
   {
-    if(isMandatory())
+    if(typedValueIsDefined_)
     {
       Messages::FieldCPtr newField(Messages::FieldDecimal::create(typedValue_));
       fieldSet.addField(
@@ -527,9 +528,9 @@ FieldInstructionDecimal::encodeCopy(
   const Messages::FieldSet & fieldSet) const
 {
   // declare a couple of variables...
-  bool previousIsKnown = false;
-  bool previousNotNull = false;
-  Decimal previousValue(0,0);
+  bool previousIsKnown = typedValueIsDefined_;
+  bool previousNotNull = typedValueIsDefined_;
+  Decimal previousValue(typedValue_);
 
   // ... then initialize them from the dictionary
   Messages::FieldCPtr previousField;
@@ -659,8 +660,10 @@ void
 FieldInstructionDecimal::interpretValue(const std::string & value)
 {
   typedValue_.parse(value);
+  typedValueIsDefined_ = true;
   typedMantissa_ = typedValue_.getMantissa();
   typedExponent_ = typedValue_.getExponent();
+
 }
 
 size_t

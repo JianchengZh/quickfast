@@ -2,9 +2,15 @@
 // All rights reserved.
 // See the file license.txt for licensing information.
 #pragma once
+#include <DotNet/UnmanagedPtr.h>
+#include <DotNet/Decoder.h>
+#include "DataSourceBuffered.h"
 
-#include "UnmanagedPtr.h"
-#include "Decoder.h"
+#include "Codecs/MessageConsumer.h"
+#include "Codecs/SynchronousDecoder.h"
+#include <iostream>
+
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 namespace QuickFASTDotNet{
   namespace Messages {
@@ -13,14 +19,83 @@ namespace QuickFASTDotNet{
 
   namespace Codecs{
 
+#pragma unmanaged
+    class StopWatch
+    {
+    public:
+      /// @brief Create the stopwatch and start it running.
+      StopWatch()
+        : start_(boost::posix_time::microsec_clock::universal_time())
+        , running_(true)
+      {
+      }
 
-    ///// @brief Delegate used by the Decoder class to callback to an entity waiting on a Message
-    /////
-    ///// This is used by the Decoder.Decode() method.  The caller caller calls Decode passing
-    ///// a MessageReceivedDelegate object.  When a message arrives on the stream, the Decoder
-    ///// class uses the MessageReceivedDelegate to signal the caller and return the newly arrived
-    ///// message.
-    //public delegate bool MessageReceivedDelegate(QuickFASTDotNet::Messages::Message^ message);
+      ~StopWatch()
+      {
+      }
+
+      unsigned long freeze()
+      {
+        running_ = true;
+        return lapse();
+      }
+
+      unsigned long lapse()
+      {
+        if(running_)
+        {
+          stop_ = boost::posix_time::microsec_clock::universal_time();
+          running_ = false;
+        }
+
+        return static_cast<unsigned long>((stop_ - start_).total_milliseconds());
+      }
+
+    private:
+      boost::posix_time::ptime start_;
+      boost::posix_time::ptime  stop_;
+      bool running_;
+    };
+
+    class MessageCounter : public QuickFAST::Codecs::MessageConsumer
+    {
+    public:
+      MessageCounter(): messageCount_(0) {}
+      virtual ~MessageCounter(){}
+
+      ////////////////////////////
+      // Implement MessageConsumer
+      virtual bool consumeMessage(QuickFAST::Messages::Message & message)
+      {
+        messageCount_ += 1;
+        return true;
+      }
+      virtual bool wantLog(unsigned short level) {return false;}
+      virtual bool logMessage(unsigned short level, const std::string & logMessage){return true;}
+      virtual bool reportDecodingError(const std::string & errorMessage)
+      {
+        //std::cerr << "Decoding error: " << errorMessage << std::endl;
+        return false;
+      }
+
+      virtual bool reportCommunicationError(const std::string & errorMessage){
+        //std::cerr << "Communication error: " << errorMessage << std::endl;
+        return false;
+      }
+
+      virtual void decodingStopped() {}
+
+      /// @brief get the count
+      /// @returns the number of calls to consumeMessage()
+      size_t getMesssageCount()const
+      {
+        return messageCount_;
+      }
+    private:
+      size_t messageCount_;
+    };
+
+#pragma managed
 
 
 
@@ -37,10 +112,10 @@ namespace QuickFASTDotNet{
       property bool Strict
       {
         bool get() { return decoder_->getStrict(); }
-        void set(bool strict) { decoder_->setStrict(strict); }
+        void set(bool strict) { decoder_->setStrict(strict); syncDecoder_->setStrict(strict); }
       }
 
-      /// @brief Indicates whether the decoder is reset after each message when 
+      /// @brief Indicates whether the decoder is reset after each message when
       /// decoding more than one message.
       ///
       /// Some data streams reset the Xcoder context at the beginning of each message
@@ -49,7 +124,7 @@ namespace QuickFASTDotNet{
       property bool ResetOnMessage
       {
         bool get() { return resetOnMessage_; }
-        void set(bool reset) { resetOnMessage_ = reset; }
+        void set(bool reset) { resetOnMessage_ = reset; syncDecoder_->setResetOnMessage(reset);}
       }
 
       /// @brief The upper limit on the number of messages to be decoded
@@ -57,7 +132,7 @@ namespace QuickFASTDotNet{
       property unsigned int MessageCountLimit
       {
         unsigned int get() { return messageCountLimit_; }
-        void set(unsigned int limit) { messageCountLimit_ = limit; }
+        void set(unsigned int limit) { messageCountLimit_ = limit; syncDecoder_->setLimit(limit);}
       }
 
       /// @brief The number of messages already decoded
@@ -67,6 +142,13 @@ namespace QuickFASTDotNet{
         unsigned int get() { return messageCount_; }
       }
 
+      /// @brief The number of milliseconds elapsed in the decoding process
+      /// of the TestSyncDecode method (if enabled)
+      property unsigned int DecodeTime
+      {
+        unsigned int get() { return decodeTime_; }
+      }
+
       /// @brief Run the decoding process
       ///
       /// Runs until the Stream reports end of data
@@ -74,16 +156,24 @@ namespace QuickFASTDotNet{
       /// or messageCount messages have been decoded.
       void Decode(MessageReceivedDelegate^ callback);
 
+      /// @brief Run a test of the decoding process using the sync decoder
+      ///
+      /// Runs until the Stream reports end of data
+      /// or the consumer returns false,
+      /// or messageCount messages have been decoded.
+      void TestSyncDecode();
+
     private:
       System::IO::Stream^ stream_;
-      bool endOfStream_;
       TemplateRegistry^ templateRegistry_;
-      UnmanagedPtr<DotNetDataSource> dataSource_;
+      UnmanagedPtr<QuickFASTDotNet::Codecs::DataSourceBuffered> dataSource_;
       UnmanagedPtr<QuickFAST::Codecs::Decoder> decoder_;
+      UnmanagedPtr<QuickFAST::Codecs::SynchronousDecoder<QuickFAST::Messages::Message, QuickFAST::Codecs::MessageConsumer> > syncDecoder_;
       unsigned int maxFieldCount_;
       bool resetOnMessage_;
       unsigned int messageCount_;
       unsigned int messageCountLimit_;
+      unsigned long decodeTime_;
     };
   }
 }

@@ -3,7 +3,9 @@
 // See the file license.txt for licensing information.
 #pragma once
 
-#include "UnmanagedPtr.h"
+#include <DotNet/UnmanagedPtr.h>
+#include <DotNet/DataSource.h>
+#include <Codecs/Decoder.h>
 
 namespace QuickFASTDotNet{
   namespace Messages {
@@ -14,22 +16,22 @@ namespace QuickFASTDotNet{
 
     ref class TemplateRegistry;
 
-    class DotNetDataSource: public QuickFAST::Codecs::DataSource
-    {
-    public:
-      DotNetDataSource(System::IO::Stream^ inStream):inStream_(inStream){}
+    //class DotNetDataSource: public QuickFAST::Codecs::DataSource
+    //{
+    //public:
+    //  DotNetDataSource(System::IO::Stream^ inStream):inStream_(inStream){}
 
-      virtual bool readByte(QuickFAST::uchar & byte)
-      {
-        int read = inStream_->ReadByte();
-        byte = static_cast<QuickFAST::uchar>(read);
+    //  virtual bool readByte(QuickFAST::uchar & byte)
+    //  {
+    //    int read = inStream_->ReadByte();
+    //    byte = static_cast<QuickFAST::uchar>(read);
 
-        return read != -1;
-      }
+    //    return read != -1;
+    //  }
 
-    private:
-      gcroot<System::IO::Stream^> inStream_;
-    };
+    //private:
+    //  gcroot<System::IO::Stream^> inStream_;
+    //};
 
 
 

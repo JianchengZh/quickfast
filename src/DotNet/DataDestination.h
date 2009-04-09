@@ -3,8 +3,12 @@
 // See the file license.txt for licensing information.
 #pragma once
 
+#include <Codecs/DataDestination.h>
+
 namespace QuickFASTDotNet{
   namespace Codecs{
+
+#pragma unmanaged
 
     class DestinationBufferImpl
       : public QuickFAST::Codecs::DestinationBuffer
@@ -45,6 +49,7 @@ namespace QuickFASTDotNet{
     private:
       TBuffer buffer_;
     };
+#pragma managed
 
 
 
@@ -69,7 +74,12 @@ namespace QuickFASTDotNet{
           array<unsigned char>^ managedArray = gcnew array<unsigned char>(size);
           QuickFAST::uchar* pMem = dbs->begin()._Myptr;
           System::Runtime::InteropServices::Marshal::Copy(System::IntPtr(pMem), managedArray, 0, size);
-          delete managedArray;
+
+          // Needs to catch exceptions.
+          //outStream_->Write(managedArray, 0, managedArray->Length);
+
+          // cant delete because its on the managed heap
+          //delete managedArray;
         }
       }
 

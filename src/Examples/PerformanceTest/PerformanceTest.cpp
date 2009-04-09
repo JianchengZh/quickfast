@@ -223,6 +223,10 @@ PerformanceTest::run()
       << std::fixed << std::setprecision(0)
       << 1000. * double(templateCount)/double(parseLapse) << " template/second.]"
       << std::endl;
+    (*performanceFile_) << "  Fields: " << templateRegistry->fieldRegistry().size()
+      << " Dictionary entries: " << templateRegistry->maxFieldCount()
+      << std::endl;
+
     for(size_t nPass = 0; nPass < count_; ++nPass)
     {
       std::cout << "Decoding input; pass " << nPass + 1 << " of " << count_ << std::endl;

@@ -48,7 +48,7 @@ NullMessage::addField(const Messages::FieldIdentityCPtr & identity, const Messag
 void
 NullMessage::addField(
   const Messages::FieldRegistry & registry,
-  Messages::FieldRegistry::Index index,
+  Messages::FieldHandle index,
   const Messages::FieldCPtr & value)
 {
   ++ size_;

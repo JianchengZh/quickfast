@@ -1,5 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<!-- 
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+  <!--
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+-->
+  <!-- 
 Copyright (c) 2009, Object Computing, Inc.
 All rights reserved.
 See the file license.txt for licensing information.
@@ -15,12 +20,13 @@ AB_MSG_TYPE as a constant field.  The template ID consumes the presence map
 bit which will always be a one indicating that the template ID/MSG_TYPE is 
 in the data stream.
 -->
-<templates xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+
+
   <template name="SequenceNumberReset" id="1" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="1"/>
     </uInt16>
-    <filler name="AB_STOCK_IDX" id="1"/>
+    <unused name="AB_STOCK_IDX" id="1"/>
     <uInt32 name="AB_SEQUENCE" id="2">
       <increment/>
     </uInt32>
@@ -30,20 +36,20 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="2"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
@@ -51,20 +57,20 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="5"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
@@ -72,20 +78,20 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="10"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
@@ -93,20 +99,20 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="20"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
 
   </template>
@@ -114,20 +120,20 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="24"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
@@ -135,49 +141,49 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="30"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
-  
+
   <template name="ImbalanceRefreshRequest" id="31" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="31"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
-  
+
   <template name="BookRefresh" id="32" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="32"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
+    <unused name="FILLER_01" id="1"/>
     <uInt32 name="AB_SEQUENCE" id="2">
       <increment/>
     </uInt32>
@@ -209,46 +215,46 @@ in the data stream.
       <copy/>
     </uInt16>
   </template>
-  
+
   <template name="ImbalanceRefresh" id="33" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="33"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
-  
+
   <template name="SymbolIndexMappingRequest" id="34" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="34"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
@@ -259,21 +265,21 @@ in the data stream.
     <uInt16 name="AB_STOCK_IDX" id="1">
       <copy/>
     </uInt16>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
     <uInt8 name="AB_SESSION_ID" id="12">
       <copy/>
     </uInt8>
     <string name="AB_SYMBOL_STRING" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </string>
   </template>
 
@@ -287,15 +293,15 @@ in the data stream.
     <uInt32 name="AB_SEQUENCE" id="2">
       <increment/>
     </uInt32>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
     <uInt8 name="AB_SESSION_ID" id="12">
       <copy/>
     </uInt8>
@@ -305,43 +311,43 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="37"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
     <uInt16 name="AB_FIRM_ID" id="11">
       <copy/>
     </uInt16>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_12" id="12"/>
     <string name="AB_FIRM_STRING" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </string>
   </template>
-  
+
   <template name="FirmIndexMappingRequest" id="38" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="38"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
@@ -349,27 +355,29 @@ in the data stream.
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="99"/>
     </uInt16>
-    <filler name="FILLER_01" id="1"/>
-    <filler name="FILLER_02" id="2"/>
-    <filler name="FILLER_03" id="3"/>
-    <filler name="FILLER_04" id="4"/>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
-    <filler name="FILLER_08" id="8"/>
-    <filler name="FILLER_09" id="9"/>
-    <filler name="FILLER_10" id="10"/>
-    <filler name="FILLER_11" id="11"/>
-    <filler name="FILLER_12" id="12"/>
+    <unused name="FILLER_01" id="1"/>
+    <unused name="FILLER_02" id="2"/>
+    <unused name="FILLER_03" id="3"/>
+    <unused name="FILLER_04" id="4"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
+    <unused name="FILLER_08" id="8"/>
+    <unused name="FILLER_09" id="9"/>
+    <unused name="FILLER_10" id="10"/>
+    <unused name="FILLER_11" id="11"/>
+    <unused name="FILLER_12" id="12"/>
     <bitmap name="AB_BITMAP" id="13">
-      <arcaNOP/>
+      <arca_nop/>
     </bitmap>
   </template>
 
-  <template name="Add" id="100" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+  <!-- message type 100 -->
+  <template name="Add" id="65" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="100"/>
     </uInt16>
+    <unused name="AB_MSG_TYPE_PMAP_BIT" id="0"/>
     <uInt16 name="AB_STOCK_IDX" id="1">
       <copy/>
     </uInt16>
@@ -408,7 +416,8 @@ in the data stream.
     </uInt8>
   </template>
 
-  <template name="Modify" id="101" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+  <!-- id="101"-->
+  <template name="Modify" id="67" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="101"/>
     </uInt16>
@@ -450,7 +459,8 @@ in the data stream.
     </uInt8>
   </template>
 
-  <template name="Delete" id="102" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+  <!-- id="102"-->
+  <template name="Delete" id="76" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="102"/>
     </uInt16>
@@ -466,9 +476,9 @@ in the data stream.
     <uInt32 name="AB_ORDER_ID" id="4">
       <copy/>
     </uInt32>
-    <filler name="FILLER_05" id="5"/>
-    <filler name="FILLER_06" id="6"/>
-    <filler name="FILLER_07" id="7"/>
+    <unused name="FILLER_05" id="5"/>
+    <unused name="FILLER_06" id="6"/>
+    <unused name="FILLER_07" id="7"/>
     <string name="AB_BUY_SELL" id="8">
       <copy/>
     </string>
@@ -486,7 +496,8 @@ in the data stream.
     </uInt8>
   </template>
 
-  <template name="Imbalance" id="103" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
+  >!-- id="103" -->
+  <template name="Imbalance" id="72" xmlns="http://www.fixprotocol.org/ns/fast/td/1.1">
     <uInt16 name="AB_MSG_TYPE" id="0">
       <constant value="103"/>
     </uInt16>
@@ -529,9 +540,9 @@ in the data stream.
     <uInt8 name="AB_SESSION_ID" id="12">
       <copy/>
     </uInt8>
-    <uInt32 name="AB_MKT_IMBALANCE" id="13">
-      <arcaNOP/>
+    <uInt32 name="AB_MKT_IMBALANCE" id="13" >
+      <arca_nop/>
     </uInt32>
   </template>
-  
+
 </templates>

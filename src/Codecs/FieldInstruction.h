@@ -164,7 +164,7 @@ namespace QuickFAST{
         return mandatory_;
       }
 
-      Messages::FieldRegistry::Index getFieldIndex() const
+      Messages::FieldHandle getFieldIndex() const
       {
         return fieldIndex_;
       }
@@ -576,7 +576,7 @@ namespace QuickFAST{
       /// Identify information for the fields to be Xcoded by this instruction
 //      Messages::FieldIdentityPtr identity_;
       Messages::FieldRegistry & fieldRegistry_;
-      Messages::FieldRegistry::Index fieldIndex_;
+      Messages::FieldHandle fieldIndex_;
 
       /// Is this field required in the application message?
       bool mandatory_;

@@ -42,7 +42,7 @@ namespace QuickFAST{
       /// @param identity identifies this field
       /// @param value is the value to be assigned.
 //      virtual void addField(const FieldIdentityCPtr & identity, const FieldCPtr & value) = 0;
-      virtual void addField(const FieldRegistry & registry, FieldRegistry::Index index, const FieldCPtr & value) = 0;
+      virtual void addField(const FieldRegistry & registry, FieldHandle index, const FieldCPtr & value) = 0;
 
       /// @brief Get the identity information for the specified field
       /// @param[in] name identifies the desired field

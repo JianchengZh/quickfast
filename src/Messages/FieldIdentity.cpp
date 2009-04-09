@@ -4,27 +4,8 @@
 #include <Common/QuickFASTPch.h>
 #include "FieldIdentity.h"
 
-#ifdef _MSC_VER
-#pragma warning(disable:4355) // disable warning C4355: 'this' : used in base member initializer list
-#endif
 using namespace QuickFAST;
 using namespace Messages;
-
-namespace
-{
-  std::string anonName(void * address)
-  {
-    return boost::lexical_cast<std::string>(address);
-  }
-}
-
-FieldIdentity::FieldIdentity()
-  : /*mandatory_(true)
-  , */localName_(anonName(this))
-  , refcount_(0)
-{
-  qualifyName(qualifiedName_, localName_, fieldNamespace_, applicationType_, applicationTypeNamespace_);
-}
 
 void
 FieldIdentity::qualifyName(
